@@ -46,5 +46,3 @@ const ELGIGANTEN_MONITOR =
 
   await browser.close();
 })();
-
-//test12345
