@@ -23,6 +23,9 @@
     },
     "clean": {
       "cache": false
+    },
+    "start": {
+      "dependsOn": ["^build"]
     }
   }
 }
