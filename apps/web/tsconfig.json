@@ -9,5 +9,5 @@
       }
     ]
   },
-  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"]
+  "include": ["app", "next-env.d.ts", ".next/types/**/*.ts"]
 }
