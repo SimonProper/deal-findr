@@ -1,0 +1,28 @@
+{
+  "name": "mobile",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "dev": "pnpm start"
+  },
+  "dependencies": {
+    "expo": "^49.0.18",
+    "expo-status-bar": "^1.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "0.72.6",
+    "ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@types/react": "^18.0.22",
+    "@types/react-native": "^0.69.15",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.2.2"
+  },
+  "private": true
+}

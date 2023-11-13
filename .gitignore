@@ -31,3 +31,6 @@ dist
 
 # turbo 
 *.turbo
+
+# expo
+*.expo
