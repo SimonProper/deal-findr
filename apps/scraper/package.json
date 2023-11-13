@@ -1,0 +1,28 @@
+{
+  "name": "scraper",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "@types/node": "^20.8.9",
+    "eslint-config-custom": "workspace:*",
+    "jest-presets": "workspace:*",
+    "tsconfig": "workspace:*",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "puppeteer": "^21.5.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
