@@ -34,3 +34,6 @@ dist
 
 # expo
 *.expo
+
+# android studio
+.idea
