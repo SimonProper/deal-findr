@@ -31,3 +31,9 @@ dist
 
 # turbo 
 *.turbo
+
+# expo
+*.expo
+
+# android studio
+.idea
