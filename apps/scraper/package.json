@@ -8,10 +8,11 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "tsup src/index.ts --format js --watch --onSuccess \"node dist/index.js\""
+    "dev": "tsup src/index.ts --watch --onSuccess \"node dist/index.cjs\""
   },
   "keywords": [],
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.8.9",
     "eslint-config-custom": "workspace:*",
@@ -22,6 +23,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "puppeteer": "^21.5.0"
   },

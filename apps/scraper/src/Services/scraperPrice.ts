@@ -38,6 +38,7 @@ export async function scrapeWebPagePrice(
     } else if (script.offers && script.offers.price) {
       // If "offers" is an object, access the price directly
       console.log(ProductName + " pris: " + script.offers.price + " kr");
+      return(script.offers.price);
     }
   }
 

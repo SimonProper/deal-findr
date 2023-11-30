@@ -10,9 +10,8 @@ export const scraperController = {
         res.status(400).json({ error: 'Invalid URL parameter' });
         return;
       }
-
       const price = await scrapeWebPagePrice(url, "test");
-      res.json({ url, price });
+      res.json({ price });
     } catch (error) {
       console.error('Error scraping price:', error);
       res.status(500).json({ error: 'Internal server error' });
