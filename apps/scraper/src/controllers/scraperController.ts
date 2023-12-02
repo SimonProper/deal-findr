@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { scrapeWebPagePrice } from "../services/scraperPrice.ts";
+import { scrapeWebPagePrice } from "../services123/scraperPrice.ts";
 
 export const scraperController = {
   async scrapePrice(req: Request, res: Response): Promise<void> {
