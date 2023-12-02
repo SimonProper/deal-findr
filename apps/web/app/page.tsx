@@ -5,13 +5,14 @@ import { scrapePrice } from "../app/api/scraper";
 export default function Home() {
   const [url, setUrl] = useState("");
   const [price, setPrice] = useState<null | number>(null);
+  const [name, setName] = useState<string>("");
 
   const handleButtonClick = async () => {
     try {
-      const scrapedPrice = await scrapePrice(url);
-      console.log(scrapedPrice);
-      setPrice(scrapedPrice);
-    } catch (error) {}
+      const productInfo = await scrapePrice(url);
+      setPrice(productInfo.price);
+      setName(productInfo.name)
+    } catch (error) { }
   };
 
   return (
@@ -33,9 +34,14 @@ export default function Home() {
         </button>
       </div>
       {price !== null && (
-        <p className="mt-4 text-xl">
-          Scraped Price: <span className="font-semibold">{price} kr</span>
-        </p>
+        <div>
+          <p className="mt-4 text-xl">
+            Name: <span className="font-semibold">{name} kr</span>
+          </p>
+          <p className="mt-4 text-xl">
+            Price: <span className="font-semibold">{price} kr</span>
+          </p>
+        </div>
       )}
     </main>
   );

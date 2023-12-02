@@ -2,9 +2,8 @@ import puppeteer from "puppeteer";
 import fs from "fs";
 
 export async function scrapeWebPagePrice(
-  url: string,
-  ProductName: string
-): Promise<void> {
+  url: string
+): Promise<{ name: string; price: number | null }> {
   const browser = await puppeteer.launch({ headless: "new" });
   const page = await browser.newPage();
 
@@ -31,22 +30,33 @@ export async function scrapeWebPagePrice(
 
   fs.writeFileSync("data/test.json", JSON.stringify(ldJsonScripts, null, 2));
 
+
+
+  // Finding the price and the name of the product
   for (const script of ldJsonScripts) {
+    let prodName = "";
+    if (script['@type'] === 'Product' && script.name) {
+      console.log("namnet:" + script.name);
+      prodName = script.name;
+    }
     if (Array.isArray(script.offers)) {
       if (script.offers.length > 0 && script.offers[0].price) {
         console.log(
-          ProductName + " pris: " + script.offers.price + " kr (no object)"
+          prodName + " pris: " + script.offers[0].price + " kr (no object)"
         );
-        return script.offers[0].price;
+        await browser.close();
+        return { name: prodName, price: script.offers[0].price };
       }
     } else if (script.offers && script.offers.price) {
       // If "offers" is an object, access the price directly
       console.log(
-        ProductName + " pris: " + script.offers.price + " kr (object)"
+        prodName + " pris: " + script.offers.price + " kr (object)"
       );
-      return script.offers.price;
+      await browser.close();
+      return { name: prodName, price: script.offers.price };
     }
   }
 
   await browser.close();
+  return { name: "", price: null };
 }

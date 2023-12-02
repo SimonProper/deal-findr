@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { scrapeWebPagePrice } from "../services123/scraperPrice.ts";
+import { scrapeWebPagePrice } from "../services/scraperPrice.ts";
 
 export const scraperController = {
   async scrapePrice(req: Request, res: Response): Promise<void> {
@@ -11,9 +11,8 @@ export const scraperController = {
         return;
       }
       console.log(url);
-      const price = await scrapeWebPagePrice(url, "test");
-      console.log("priset:" + price);
-      res.json({ price });
+      const productInfo = await scrapeWebPagePrice(url);
+      res.json({ productInfo });
     } catch (error) {
       console.error("Error scraping price:", error);
       res.status(500).json({ error: "Internal server error" });
