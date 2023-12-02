@@ -1,17 +1,17 @@
-'use client';
-import React, { useState } from 'react';
-import { scrapePrice } from '../app/api/scraper'; 
+"use client";
+import React, { useState } from "react";
+import { scrapePrice } from "../app/api/scraper";
 
 export default function Home() {
-  const [url, setUrl] = useState('');
-  const [price, setPrice] = useState(null);
+  const [url, setUrl] = useState("");
+  const [price, setPrice] = useState<null | number>(null);
 
   const handleButtonClick = async () => {
     try {
       const scrapedPrice = await scrapePrice(url);
+      console.log(scrapedPrice);
       setPrice(scrapedPrice);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (

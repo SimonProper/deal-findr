@@ -1,0 +1,63 @@
+[
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "@id": "https://www.elgiganten.se/product/vitvaror/kyl-frys/kyl-frys-kombiskap/whirlpool-kylskapfrys-w5-711e-w-1/207676",
+    "name": "Whirlpool kylskåp/frys W5 711E W 1",
+    "image": "https://www.elgiganten.se/image/dv_web_D180001002534391/207676/whirlpool-kylskapfrys-w5-711e-w-1.jpg",
+    "description": "Whirlpool kylskåp/frys W5 711E W 1 har en total volym på 308 liter och 6th Sense-teknologi, LessFrost-system och skarp LED-belysning som skapar en optimal miljö för förvaring av dina matvaror samt ger enkelt underhåll.",
+    "url": "https://www.elgiganten.se/product/vitvaror/kyl-frys/kyl-frys-kombiskap/whirlpool-kylskapfrys-w5-711e-w-1/207676",
+    "aggregateRating": {
+      "@context": "https://schema.org/",
+      "@type": "AggregateRating",
+      "ratingValue": "4.1",
+      "reviewCount": "58"
+    },
+    "gtin": "8003437903359",
+    "itemCondition": "NewCondition",
+    "sku": "207676",
+    "brand": {
+      "@context": "https://schema.org/",
+      "@type": "Brand",
+      "name": "Whirlpool",
+      "url": "https://www.elgiganten.se/brand/whirlpool",
+      "logo": "https://www.elgiganten.se/image/DV_PNG_NOCLIP_D180001256633/brand/whirlpool.png"
+    },
+    "offers": {
+      "@context": "https://schema.org/",
+      "@type": "Offer",
+      "price": "5495",
+      "priceCurrency": "SEK",
+      "availability": "https://schema.org/InStock"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Vitvaror",
+        "item": "https://www.elgiganten.se/vitvaror"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Kyl & Frys",
+        "item": "https://www.elgiganten.se/vitvaror/kyl-frys"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Kyl & Frys kombiskåp",
+        "item": "https://www.elgiganten.se/vitvaror/kyl-frys/kyl-frys-kombiskap"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Whirlpool kylskåp/frys W5 711E W 1"
+      }
+    ]
+  }
+]

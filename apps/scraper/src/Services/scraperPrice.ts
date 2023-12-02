@@ -1,4 +1,5 @@
 import puppeteer from "puppeteer";
+import fs from "fs";
 
 export async function scrapeWebPagePrice(
   url: string,
@@ -16,6 +17,10 @@ export async function scrapeWebPagePrice(
 
   await page.setViewport({ width: 1080, height: 1024 });
 
+  // Required to fetch all information on some sites (elgiganten)
+  // Note: 2 seconds may be excessive (should be tested)
+  await new Promise<void>((r) => setTimeout(r, 2000));
+
   // Find all <script> elements with type "application/ld+json"
   const ldJsonScripts = await page.$$eval(
     'script[type="application/ld+json"]',
@@ -24,21 +29,22 @@ export async function scrapeWebPagePrice(
     }
   );
 
+  fs.writeFileSync("data/test.json", JSON.stringify(ldJsonScripts, null, 2));
+
   for (const script of ldJsonScripts) {
     if (Array.isArray(script.offers)) {
       if (script.offers.length > 0 && script.offers[0].price) {
-        console.log(ProductName + " pris: " + script.offers[0].price + " kr");
+        console.log(
+          ProductName + " pris: " + script.offers.price + " kr (no object)"
+        );
+        return script.offers[0].price;
       }
-      // TODO: Tror att det är lugnt om det är en lista av offer att ta första. Kontrollera innan detta tas bort.
-      //   for (const offer of script.offers) {
-      //     if (offer.price) {
-      //       console.log("Priss: " + offer.price);
-      //     }
-      //   }
     } else if (script.offers && script.offers.price) {
       // If "offers" is an object, access the price directly
-      console.log(ProductName + " pris: " + script.offers.price + " kr");
-      return(script.offers.price);
+      console.log(
+        ProductName + " pris: " + script.offers.price + " kr (object)"
+      );
+      return script.offers.price;
     }
   }
 
