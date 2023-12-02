@@ -21,6 +21,7 @@ export async function scrapeWebPagePrice(
   await new Promise<void>((r) => setTimeout(r, 2000));
 
   // Find all <script> elements with type "application/ld+json"
+  // This works when the website use use JSON-LD to include structured data (works almost everywhere).
   const ldJsonScripts = await page.$$eval(
     'script[type="application/ld+json"]',
     (scripts) => {
@@ -28,7 +29,10 @@ export async function scrapeWebPagePrice(
     }
   );
 
-  fs.writeFileSync("data/test.json", JSON.stringify(ldJsonScripts, null, 2));
+  // Uncomment to save scraped content in files. 
+  // const content = await page.content();
+  // fs.writeFileSync("data/test_working.json", content);
+  // fs.writeFileSync("data/test.json", JSON.stringify(ldJsonScripts, null, 2));
 
 
 
