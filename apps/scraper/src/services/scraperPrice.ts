@@ -13,10 +13,12 @@ export async function scrapeWebPagePrice(url: string): Promise<{ name: string; p
 
   // Finding the price and the name of the product
   // #1 method, works 90 percent of the time
+  console.log("Initiating method #1")
   result = await findPriceAndName(page);
 
   if (!result.price || !result.name) {
     // #2 method, loop through selectors
+    console.log("Initiating method #2")
     result = await findPriceAndNameBroad(page);
     if (!result.price || !result.name) {
       result.price = 999999
@@ -88,7 +90,9 @@ async function saveScrapedContent(page: puppeteer.Page, ldJsonScripts: any[]) {
 async function findPriceAndName(page: puppeteer.Page) {
   // Fetch structured data
   const ldJsonScripts = await getJsonScripts(page);
-  await saveScrapedContent(page, ldJsonScripts);
+
+  // Uncomment to save scraped data
+  // await saveScrapedContent(page, ldJsonScripts);
 
   for (const script of ldJsonScripts) {
     let prodName = "";
@@ -112,7 +116,6 @@ async function findPriceAndName(page: puppeteer.Page) {
 }
 
 async function findPriceAndNameBroad(page: puppeteer.Page) {
-  console.log("Method 2")
 
   const productInfo = await searchWithSelectors(page);
 
