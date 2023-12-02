@@ -15,9 +15,12 @@ export async function scrapeWebPagePrice(url: string): Promise<{ name: string; p
   // #1 method, works 90 percent of the time
   result = await findPriceAndName(page);
 
-  if (!result.price) {
+  if (!result.price || !result.name) {
+    // #2 method, loop through selectors
     result = await findPriceAndNameBroad(page);
-    console.log(result)
+    if (!result.price || !result.name) {
+      result.price = 999999
+    }
   }
 
 
@@ -72,9 +75,6 @@ async function searchWithSelectors(page: puppeteer.Page) {
       break;
     }
   }
-
-  console.log(price);
-  console.log(name);
 
   return { name: name, price: price }
 }

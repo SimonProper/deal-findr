@@ -33,15 +33,20 @@ export default function Home() {
           Scrape Price
         </button>
       </div>
-      {price !== null && (
+      {price !== null && price !== 999999 && (
         <div>
           <p className="mt-4 text-xl">
-            Name: <span className="font-semibold">{name} kr</span>
+            Name: <span className="font-semibold">{name}</span>
           </p>
           <p className="mt-4 text-xl">
             Price: <span className="font-semibold">{price} kr</span>
           </p>
         </div>
+      )}
+      {price === 999999 && (
+        <p className="mt-4 text-xl">
+          Produkten kunde ej fetchas. Lägg till webbsidans selectors manuellt i backend!
+        </p>
       )}
     </main>
   );

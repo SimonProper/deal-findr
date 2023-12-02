@@ -10,7 +10,6 @@ export const scraperController = {
         res.status(400).json({ error: "Invalid URL parameter" });
         return;
       }
-      console.log(url);
       const productInfo = await scrapeWebPagePrice(url);
       res.json({ productInfo });
     } catch (error) {
