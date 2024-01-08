@@ -5,9 +5,10 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
+import useShareIntent from "../hooks/useShareIntent";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -22,6 +23,9 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
+  const router = useRouter();
+  const { shareIntent, resetShareIntent } = useShareIntent();
+
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -32,6 +36,13 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
+
+  useEffect(() => {
+    if (shareIntent) {
+      router.replace({ pathname: "shareintent", params: shareIntent });
+      resetShareIntent();
+    }
+  }, [shareIntent]);
 
   if (!loaded) {
     return null;

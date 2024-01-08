@@ -4,6 +4,17 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  expo-config-plugin-ios-share-extension@0.0.4:
+    hash: lctwh3i7fwcv36appm2pievhd4
+    path: patches/expo-config-plugin-ios-share-extension+0.0.4.patch
+  react-native-receive-sharing-intent@2.0.0:
+    hash: m6gby5hzbuyz556wfztpjqnpne
+    path: patches/react-native-receive-sharing-intent+2.0.0.patch
+  xcode@3.0.1:
+    hash: 3xk54nuohdnvctcvg6ddxpct7u
+    path: patches/xcode@3.0.1.patch
+
 importers:
 
   .:
@@ -29,6 +40,9 @@ importers:
       expo:
         specifier: ^49.0.18
         version: 49.0.23(@babel/core@7.23.3)
+      expo-config-plugin-ios-share-extension:
+        specifier: ^0.0.4
+        version: 0.0.4(patch_hash=lctwh3i7fwcv36appm2pievhd4)(react-native@0.72.6)
       expo-constants:
         specifier: ~14.4.2
         version: 14.4.2(expo@49.0.23)
@@ -62,6 +76,9 @@ importers:
       react-native-gesture-handler:
         specifier: ~2.12.0
         version: 2.12.1(react-native@0.72.6)(react@18.2.0)
+      react-native-receive-sharing-intent:
+        specifier: ^2.0.0
+        version: 2.0.0(patch_hash=m6gby5hzbuyz556wfztpjqnpne)(react-native@0.72.6)(react@18.2.0)
       react-native-safe-area-context:
         specifier: 4.6.3
         version: 4.6.3(react-native@0.72.6)(react@18.2.0)
@@ -2566,6 +2583,28 @@ packages:
       nullthrows: 1.1.1
     dev: false
 
+  /@expo/config-plugins@5.0.4:
+    resolution: {integrity: sha512-vzUcVpqOMs3h+hyRdhGwk+eGIOhXa5xYdd92yO17RMNHav3v/+ekMbs7XA2c3lepMO8Yd4/5hqmRw9ZTL6jGzg==}
+    dependencies:
+      '@expo/config-types': 47.0.0
+      '@expo/json-file': 8.2.36
+      '@expo/plist': 0.0.18
+      '@expo/sdk-runtime-versions': 1.0.0
+      '@react-native/normalize-color': 2.1.0
+      chalk: 4.1.2
+      debug: 4.3.4
+      find-up: 5.0.0
+      getenv: 1.0.0
+      glob: 7.1.6
+      resolve-from: 5.0.0
+      semver: 7.5.4
+      slash: 3.0.0
+      xcode: 3.0.1(patch_hash=3xk54nuohdnvctcvg6ddxpct7u)
+      xml2js: 0.4.23
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@expo/config-plugins@7.2.5:
     resolution: {integrity: sha512-w+5ccu1IxBHgyQk9CPFKLZOk8yZQEyTjbJwOzESK1eR7QwosbcsLkN1c1WWUZYiCXwORu3UTwJYll4+X2xxJhQ==}
     dependencies:
@@ -2582,7 +2621,7 @@ packages:
       resolve-from: 5.0.0
       semver: 7.5.4
       slash: 3.0.0
-      xcode: 3.0.1
+      xcode: 3.0.1(patch_hash=3xk54nuohdnvctcvg6ddxpct7u)
       xml2js: 0.6.0
     transitivePeerDependencies:
       - supports-color
@@ -2606,10 +2645,14 @@ packages:
       semver: 7.5.4
       slash: 3.0.0
       slugify: 1.6.6
-      xcode: 3.0.1
+      xcode: 3.0.1(patch_hash=3xk54nuohdnvctcvg6ddxpct7u)
       xml2js: 0.6.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@expo/config-types@47.0.0:
+    resolution: {integrity: sha512-r0pWfuhkv7KIcXMUiNACJmJKKwlTBGMw9VZHNdppS8/0Nve8HZMTkNRFQzTHW1uH3pBj8jEXpyw/2vSWDHex9g==}
     dev: false
 
   /@expo/config-types@49.0.0:
@@ -2744,6 +2787,14 @@ packages:
       - encoding
     dev: false
 
+  /@expo/json-file@8.2.36:
+    resolution: {integrity: sha512-tOZfTiIFA5KmMpdW9KF7bc6CFiGjb0xnbieJhTGlHrLL+ps2G0OkqmuZ3pFEXBOMnJYUVpnSy++52LFxvpa5ZQ==}
+    dependencies:
+      '@babel/code-frame': 7.10.4
+      json5: 1.0.2
+      write-file-atomic: 2.4.3
+    dev: false
+
   /@expo/json-file@8.2.37:
     resolution: {integrity: sha512-YaH6rVg11JoTS2P6LsW7ybS2CULjf40AbnAHw2F1eDPuheprNjARZMnyHFPkKv7GuxCy+B9GPcbOKgc4cgA80Q==}
     dependencies:
@@ -2811,6 +2862,14 @@ packages:
       npm-package-arg: 7.0.0
       split: 1.0.1
       sudo-prompt: 9.1.1
+    dev: false
+
+  /@expo/plist@0.0.18:
+    resolution: {integrity: sha512-+48gRqUiz65R21CZ/IXa7RNBXgAI/uPSdvJqoN9x1hfL44DNbUoWHgHiEXTx7XelcATpDwNTz6sHLfy0iNqf+w==}
+    dependencies:
+      '@xmldom/xmldom': 0.7.13
+      base64-js: 1.5.1
+      xmlbuilder: 14.0.0
     dev: false
 
   /@expo/plist@0.0.20:
@@ -7063,6 +7122,19 @@ packages:
       - supports-color
     dev: false
 
+  /expo-config-plugin-ios-share-extension@0.0.4(patch_hash=lctwh3i7fwcv36appm2pievhd4)(react-native@0.72.6):
+    resolution: {integrity: sha512-M/EMG0GiYtqkS/MOu7UA6qg2BHjl9zQesKdvxW2OiBl4xUTSDa4uIRMybN4O4yAJE9pwe0KeQbuS/ORnCZtjMg==}
+    peerDependencies:
+      react-native: ^0.69.4
+    dependencies:
+      '@expo/config-plugins': 5.0.4
+      react-native: 0.72.6(@babel/core@7.23.3)(@babel/preset-env@7.23.6)(react@18.2.0)
+      xcode: 3.0.1(patch_hash=3xk54nuohdnvctcvg6ddxpct7u)
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+    patched: true
+
   /expo-constants@14.4.2(expo@49.0.23):
     resolution: {integrity: sha512-nOB122DOAjk+KrJT69lFQAoYVQGQjFHSigCPVBzVdko9S1xGsfiOH9+X5dygTsZTIlVLpQJDdmZ7ONiv3i+26w==}
     peerDependencies:
@@ -9217,7 +9289,6 @@ packages:
     hasBin: true
     dependencies:
       minimist: 1.2.8
-    dev: true
 
   /json5@2.2.3:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
@@ -11670,6 +11741,17 @@ packages:
       react-native: 0.72.6(@babel/core@7.23.3)(@babel/preset-env@7.23.6)(react@18.2.0)
     dev: false
 
+  /react-native-receive-sharing-intent@2.0.0(patch_hash=m6gby5hzbuyz556wfztpjqnpne)(react-native@0.72.6)(react@18.2.0):
+    resolution: {integrity: sha512-JFSO8mZm/hU0EJQYhC5z2m1iiMwJhD9CQ/hYQ8t1UQ9mQynoS/yo+hjX2T6hFXa8mtzlwO/BFwKZjBaVNPdWuw==}
+    peerDependencies:
+      react: '*'
+      react-native: '*'
+    dependencies:
+      react: 18.2.0
+      react-native: 0.72.6(@babel/core@7.23.3)(@babel/preset-env@7.23.6)(react@18.2.0)
+    dev: false
+    patched: true
+
   /react-native-safe-area-context@4.6.3(react-native@0.72.6)(react@18.2.0):
     resolution: {integrity: sha512-3CeZM9HFXkuqiU9HqhOQp1yxhXw6q99axPWrT+VJkITd67gnPSU03+U27Xk2/cr9XrLUnakM07kj7H0hdPnFiQ==}
     peerDependencies:
@@ -13996,18 +14078,27 @@ packages:
       utf-8-validate:
         optional: true
 
-  /xcode@3.0.1:
+  /xcode@3.0.1(patch_hash=3xk54nuohdnvctcvg6ddxpct7u):
     resolution: {integrity: sha512-kCz5k7J7XbJtjABOvkc5lJmkiDh8VhjVCGNiqdKCscmVpdVUpEAyXv1xmCLkQJ5dsHqx3IPO4XW+NTDhU/fatA==}
     engines: {node: '>=10.0.0'}
     dependencies:
       simple-plist: 1.3.1
       uuid: 7.0.3
     dev: false
+    patched: true
 
   /xml-name-validator@4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
     engines: {node: '>=12'}
     dev: true
+
+  /xml2js@0.4.23:
+    resolution: {integrity: sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==}
+    engines: {node: '>=4.0.0'}
+    dependencies:
+      sax: 1.3.0
+      xmlbuilder: 11.0.1
+    dev: false
 
   /xml2js@0.6.0:
     resolution: {integrity: sha512-eLTh0kA8uHceqesPqSE+VvO1CDDJWMwlQfB6LuN6T8w6MaDJ8Txm8P7s5cHD0miF0V+GGTZrDQfxPZQVsur33w==}
