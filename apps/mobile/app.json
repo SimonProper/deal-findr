@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "deal-findr",
+    "slug": "deal-findr",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -43,6 +43,7 @@
       ],
       "expo-router"
     ],
+
     "scheme": "deal-findr-schema"
   }
 }
