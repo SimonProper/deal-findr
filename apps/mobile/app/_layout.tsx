@@ -5,48 +5,45 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack, useRouter } from "expo-router";
+import { Slot, SplashScreen, Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
-import useShareIntent from "../hooks/useShareIntent";
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from "expo-router";
+import { useShareIntent } from "expo-share-intent";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
+  const router = useRouter();
+  const [fontsLoaded, fontError] = useFonts({
     ...FontAwesome.font,
   });
-
-  const router = useRouter();
-  const { shareIntent, resetShareIntent } = useShareIntent();
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+  const { hasShareIntent, shareIntent, resetShareIntent } = useShareIntent({
+    debug: true,
+  });
 
   useEffect(() => {
-    if (loaded) {
+    if (fontsLoaded || fontError) {
+      // Hide the splash screen after the fonts have loaded (or an error was returned) and the UI is ready.
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [fontsLoaded, fontError]);
 
-  useEffect(() => {
-    if (shareIntent) {
-      router.replace({ pathname: "shareintent", params: shareIntent });
-      resetShareIntent();
-    }
-  }, [shareIntent]);
-
-  if (!loaded) {
+  // Prevent rendering until the font has loaded or an error was returned
+  if (!fontsLoaded && !fontError) {
     return null;
   }
+
+  useEffect(() => {
+    if (hasShareIntent) {
+      router.replace({
+        pathname: "/share-intent",
+        params: { shareIntent: JSON.stringify(shareIntent) },
+      });
+      resetShareIntent();
+    }
+  }, [hasShareIntent]);
 
   return <RootLayoutNav />;
 }
@@ -56,7 +53,9 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack />
+      <SafeAreaProvider>
+        <Stack />
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 }

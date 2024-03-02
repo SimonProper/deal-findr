@@ -31,19 +31,18 @@
     },
     "plugins": [
       [
-        "expo-config-plugin-ios-share-extension",
+        "expo-share-intent",
         {
           "activationRules": {
             "NSExtensionActivationSupportsText": true,
             "NSExtensionActivationSupportsWebURLWithMaxCount": 1,
-            "NSExtensionActivationSupportsWebPageWithMaxCount": 1,
-            "NSExtensionActivationSupportsImageWithMaxCount": 1
-          }
+            "NSExtensionActivationSupportsWebPageWithMaxCount": 1
+          },
+          "androidIntentFilters": ["text/*", "image/*"]
         }
       ],
       "expo-router"
     ],
-
     "scheme": "deal-findr-schema"
   }
 }
