@@ -16,5 +16,10 @@
     "prettier": "^3",
     "turbo": "latest"
   },
+  "pnpm": {
+    "patchedDependencies": {
+      "xcode@3.0.1": "patches/xcode@3.0.1.patch"
+    }
+  },
   "packageManager": "pnpm@8.6.10"
 }
