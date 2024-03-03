@@ -10,9 +10,6 @@ import { useColorScheme } from "react-native";
 import { useShareIntent } from "expo-share-intent";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
 export default function RootLayout() {
   const router = useRouter();
 
