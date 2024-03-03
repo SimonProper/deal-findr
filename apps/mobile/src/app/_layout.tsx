@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { useShareIntent } from "expo-share-intent";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import "../styles/global.css";
 
 export default function RootLayout() {
   const router = useRouter();
