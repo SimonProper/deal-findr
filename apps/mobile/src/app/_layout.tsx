@@ -10,6 +10,7 @@ import { useColorScheme } from "react-native";
 import { useShareIntent } from "expo-share-intent";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../styles/global.css";
+import { TRPCProvider } from "../utils/api";
 
 export default function RootLayout() {
   const router = useRouter();
@@ -35,10 +36,12 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <SafeAreaProvider>
-        <Stack />
-      </SafeAreaProvider>
-    </ThemeProvider>
+    <TRPCProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <SafeAreaProvider>
+          <Stack />
+        </SafeAreaProvider>
+      </ThemeProvider>
+    </TRPCProvider>
   );
 }
