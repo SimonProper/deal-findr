@@ -1,5 +1,7 @@
-import { scrapeWebPage } from "./Services/scraper.js";
 import { scrapeWebPagePrice } from "./Services/scraperPrice.js";
+import * as trpcExpress from "@trpc/server/adapters/express";
+import express from "express";
+import { appRouter, createTRPCContext } from "./trpc/index.ts";
 
 const NLYMAN_JEANS =
   "https://nlyman.com/se/produkt/woodbird-leroy-thun-black-jeans_841459-3294/";
@@ -24,10 +26,33 @@ const CLAS_OHLSON =
 // scrapeWebPage(ELGIGANTEN_MONITOR, "elgiganten.txt");
 
 // Fungerar
-scrapeWebPagePrice(ELGIGANTEN_MONITOR, "ELGIGANTEN_MONITOR");
+/* scrapeWebPagePrice(ELGIGANTEN_MONITOR, "ELGIGANTEN_MONITOR");
 scrapeWebPagePrice(HM_JEANS, "HM_JEANS");
 scrapeWebPagePrice(NLYMAN_JEANS, "NLYMAN_JEANS");
 scrapeWebPagePrice(ZALANDO_SWEATER, "ZALANDO_SWEATER");
 scrapeWebPagePrice(POWER_SONOS, "POWER_SONOS");
 scrapeWebPagePrice(IKEA_SANG, "IKEA_SANG");
-scrapeWebPagePrice(CLAS_OHLSON, "CLAS_OHLSON");
+scrapeWebPagePrice(CLAS_OHLSON, "CLAS_OHLSON"); */
+
+async function main() {
+  // express implementation
+  const app = express();
+
+  app.use((req, _res, next) => {
+    // request logger
+    console.log("⬅️ ", req.method, req.path, req.body ?? req.query);
+
+    next();
+  });
+
+  app.use(
+    "/trpc",
+    trpcExpress.createExpressMiddleware({
+      router: appRouter,
+      createContext: createTRPCContext,
+    }),
+  );
+  app.listen(4000);
+}
+
+void main();

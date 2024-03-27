@@ -7,5 +7,5 @@
   },
   "exclude": ["node_modules"],
   "extends": "@deal-findr/tsconfig/base.json",
-  "include": ["."]
+  "include": ["src"]
 }
