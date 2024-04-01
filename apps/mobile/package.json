@@ -11,7 +11,6 @@
     "dev": "pnpm start"
   },
   "dependencies": {
-    "@deal-findr/scraper": "workspace:*",
     "@deal-findr/ui": "workspace:*",
     "expo": "^50.0.8",
     "expo-constants": "~15.4.5",
@@ -33,6 +32,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
+    "@deal-findr/scraper": "workspace:*",
     "@deal-findr/tsconfig": "workspace:*",
     "@types/react": "^18.0.22",
     "@types/react-native": "^0.69.15",
