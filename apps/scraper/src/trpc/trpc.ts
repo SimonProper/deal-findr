@@ -32,7 +32,7 @@ export const createTRPCContext = async ({
 
   console.log(">>> tRPC Request from", source);
 
-  return {};
+  return { req, res };
 };
 
 /**

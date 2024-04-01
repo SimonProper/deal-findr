@@ -1,6 +1,7 @@
 import { scrapeWebPagePrice } from "./Services/scraperPrice.js";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
+import cors from "cors";
 import { appRouter, createTRPCContext } from "./trpc/index.ts";
 
 const NLYMAN_JEANS =
@@ -37,6 +38,9 @@ scrapeWebPagePrice(CLAS_OHLSON, "CLAS_OHLSON"); */
 async function main() {
   // express implementation
   const app = express();
+
+  if (process.env.NODE_ENV === "development")
+    app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
   app.use((req, _res, next) => {
     // request logger

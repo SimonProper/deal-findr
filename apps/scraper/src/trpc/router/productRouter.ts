@@ -10,4 +10,7 @@ export const productRouter = createTRPCRouter({
       const result = await scrapeWebPagePrice(input.url, "ELGIGANTEN_MONITOR");
       return result;
     }),
+  getProduct: publicProcedure.query(() => {
+    return { msg: "hello world!" };
+  }),
 });
