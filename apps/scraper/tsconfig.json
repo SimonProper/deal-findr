@@ -6,6 +6,6 @@
     "moduleResolution": "NodeNext"
   },
   "exclude": ["node_modules"],
-  "extends": "tsconfig/base.json",
-  "include": ["."]
+  "extends": "@deal-findr/tsconfig/base.json",
+  "include": ["src"]
 }

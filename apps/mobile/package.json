@@ -1,5 +1,5 @@
 {
-  "name": "mobile",
+  "name": "@deal-findr/mobile",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
@@ -11,6 +11,7 @@
     "dev": "pnpm start"
   },
   "dependencies": {
+    "@deal-findr/ui": "workspace:*",
     "expo": "^50.0.8",
     "expo-constants": "~15.4.5",
     "expo-dev-client": "~3.3.9",
@@ -26,14 +27,15 @@
     "react-native-reanimated": "^3.7.2",
     "react-native-safe-area-context": "4.9.0",
     "react-native-screens": "~3.29.0",
-    "tailwindcss": "^3.3.0",
-    "ui": "workspace:*"
+    "superjson": "^2.2.1",
+    "tailwindcss": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
+    "@deal-findr/scraper": "workspace:*",
+    "@deal-findr/tsconfig": "workspace:*",
     "@types/react": "^18.0.22",
     "@types/react-native": "^0.69.15",
-    "tsconfig": "workspace:*",
     "typescript": "^5.2.2"
   },
   "overrides": {
