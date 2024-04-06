@@ -1,8 +1,12 @@
 import { scrapeWebPagePrice } from "./Services/scraperPrice.js";
+import "dotenv/config";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
 import cors from "cors";
 import { appRouter, createTRPCContext } from "./trpc/index.ts";
+
+// Needs to be after the import of dotenv since it parses the env variables
+import "./env.ts";
 
 const NLYMAN_JEANS =
   "https://nlyman.com/se/produkt/woodbird-leroy-thun-black-jeans_841459-3294/";

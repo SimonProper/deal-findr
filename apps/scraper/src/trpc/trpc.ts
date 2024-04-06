@@ -11,6 +11,10 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import * as trpcExpress from "@trpc/server/adapters/express";
 
+//! This must use relative import since using tsconfig paths won't work when
+// the AppRouter type is consumed in another app in the monorepo.
+import { db } from "../lib/db/index.ts";
+
 /**
  * 1. CONTEXT
  *
@@ -32,7 +36,7 @@ export const createTRPCContext = async ({
 
   console.log(">>> tRPC Request from", source);
 
-  return { req, res };
+  return { req, res, db };
 };
 
 /**
@@ -90,6 +94,6 @@ export const publicProcedure = t.procedure;
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   return next({
-    ctx: {},
+    ctx: ctx,
   });
 });
