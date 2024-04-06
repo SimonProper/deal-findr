@@ -2,6 +2,10 @@
   "exclude": ["node_modules"],
   "extends": "@deal-findr/tsconfig/nextjs.json",
   "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"],
+      "@lib/*": ["./src/lib/*"]
+    },
     "outDir": "dist",
     "plugins": [
       {
