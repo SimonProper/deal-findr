@@ -1,5 +1,5 @@
 import { createTRPCClient, httpBatchLink } from "@trpc/client";
-import type { AppRouter } from "@deal-findr/scraper/src/trpc";
+import type { AppRouter } from "@deal-findr/backend/src/trpc";
 import SuperJSON from "superjson";
 
 const api = createTRPCClient<AppRouter>({

@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
-    "@deal-findr/scraper": "workspace:*",
+    "@deal-findr/backend": "workspace:*",
     "@deal-findr/tsconfig": "workspace:*",
     "@types/react": "^18.0.22",
     "@types/react-native": "^0.69.15",

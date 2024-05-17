@@ -1,8 +1,10 @@
 import { scrapeWebPagePrice } from "./Services/scraperPrice.js";
 import "dotenv/config";
-import * as trpcExpress from "@trpc/server/adapters/express";
-import express from "express";
-import cors from "cors";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { serve } from "@hono/node-server";
+import { trpcServer } from "@hono/trpc-server";
+
 import { appRouter, createTRPCContext } from "./trpc/index.ts";
 
 // Needs to be after the import of dotenv since it parses the env variables
@@ -39,28 +41,25 @@ scrapeWebPagePrice(POWER_SONOS, "POWER_SONOS");
 scrapeWebPagePrice(IKEA_SANG, "IKEA_SANG");
 scrapeWebPagePrice(CLAS_OHLSON, "CLAS_OHLSON"); */
 
-async function main() {
-  // express implementation
-  const app = express();
+const app = new Hono();
+if (process.env.NODE_ENV === "development")
+  app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
-  if (process.env.NODE_ENV === "development")
-    app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(async (ctx, next) => {
+  // request logger
+  const body = await ctx.req.parseBody();
 
-  app.use((req, _res, next) => {
-    // request logger
-    console.log("⬅️ ", req.method, req.path, req.body ?? req.query);
+  console.log("⬅️ ", ctx.req.method, ctx.req.path, body ?? ctx.req.query);
 
-    next();
-  });
+  return next();
+});
 
-  app.use(
-    "/trpc",
-    trpcExpress.createExpressMiddleware({
-      router: appRouter,
-      createContext: createTRPCContext,
-    }),
-  );
-  app.listen(4000);
-}
+app.use(
+  "/trpc/*",
+  trpcServer({
+    router: appRouter,
+    createContext: (_opts, ctx) => createTRPCContext(ctx),
+  }),
+);
 
-void main();
+serve({ port: 4000, fetch: app.fetch });

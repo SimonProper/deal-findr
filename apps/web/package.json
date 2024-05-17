@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@deal-findr/eslint-config": "workspace:*",
-    "@deal-findr/scraper": "workspace:*",
+    "@deal-findr/backend": "workspace:*",
     "@deal-findr/tsconfig": "workspace:*",
     "@next/eslint-plugin-next": "^13.4.19",
     "@tanstack/react-query": "^5.22.2",

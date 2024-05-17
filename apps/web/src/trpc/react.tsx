@@ -6,7 +6,7 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
-import type { AppRouter } from "@deal-findr/scraper/src/trpc";
+import type { AppRouter } from "@deal-findr/backend/src/trpc";
 
 const createQueryClient = () => new QueryClient();
 

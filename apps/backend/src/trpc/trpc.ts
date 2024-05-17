@@ -9,6 +9,7 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import type { Context } from "hono";
 import * as trpcExpress from "@trpc/server/adapters/express";
 
 //! This must use relative import since using tsconfig paths won't work when
@@ -28,11 +29,8 @@ import { db } from "../lib/db/index.ts";
  * @see https://trpc.io/docs/server/context
  */
 
-export const createTRPCContext = async ({
-  req,
-  res,
-}: trpcExpress.CreateExpressContextOptions) => {
-  const source = req.headers["x-trpc-source"] ?? "unknown";
+export const createTRPCContext = async ({ req, res }: Context) => {
+  const source = req.header("x-trpc-source") || "unkown";
 
   console.log(">>> tRPC Request from", source);
 
