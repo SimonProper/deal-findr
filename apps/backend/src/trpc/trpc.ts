@@ -15,6 +15,7 @@ import * as trpcExpress from "@trpc/server/adapters/express";
 //! This must use relative import since using tsconfig paths won't work when
 // the AppRouter type is consumed in another app in the monorepo.
 import { db } from "../lib/db/index.ts";
+import { getCookie } from "hono/cookie";
 
 /**
  * 1. CONTEXT
@@ -29,12 +30,12 @@ import { db } from "../lib/db/index.ts";
  * @see https://trpc.io/docs/server/context
  */
 
-export const createTRPCContext = async ({ req, res }: Context) => {
-  const source = req.header("x-trpc-source") || "unkown";
+export const createTRPCContext = async (honoCtx: Context) => {
+  const source = honoCtx.req.header("x-trpc-source") || "unkown";
 
   console.log(">>> tRPC Request from", source);
 
-  return { req, res, db };
+  return { honoCtx, db };
 };
 
 /**
@@ -91,6 +92,8 @@ export const publicProcedure = t.procedure;
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+  const session = getCookie(ctx.honoCtx, "session");
+  console.log({ session });
   return next({
     ctx: ctx,
   });

@@ -1,9 +1,8 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "experimentalUI": true,
   "globalDependencies": ["**/.env.*local"],
   "globalEnv": ["PORT"],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"]
     },
