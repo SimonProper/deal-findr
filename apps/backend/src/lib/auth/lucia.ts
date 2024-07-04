@@ -1,5 +1,5 @@
 import { Lucia } from "lucia";
-import { adapter } from "@lib/db/index.ts";
+import { adapter } from "../db/index.ts";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {

@@ -1,14 +1,11 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "../trpc.ts";
-import { env } from "@/env.ts";
+import { env } from "../../env.ts";
 import { decode } from "hono/jwt";
-import { schema } from "@/lib/db/index.ts";
-import { eq } from "drizzle-orm";
-import { userTable } from "@/lib/db/schema/user.ts";
-import { providerTable, sessionTable } from "@/lib/db/schema/auth.ts";
-import { insertUser } from "@/lib/user.ts";
-import { lucia } from "@/lib/auth/lucia.ts";
+import { providerTable } from "../../lib/db/schema/auth.ts";
+import { insertUser } from "../../lib/user.ts";
+import { lucia } from "../../lib/auth/lucia.ts";
 
 const GoogleResponseSchema = z.object({
   id_token: z.string(),
@@ -86,6 +83,7 @@ export const authRouter = createTRPCRouter({
           });
 
           const newUser = insertUserResult.at(0);
+          console.log("inserted user: ", { newUser });
 
           if (newUser) {
             const insertProviderRowResult = await ctx.db
@@ -97,35 +95,33 @@ export const authRouter = createTRPCRouter({
               })
               .returning();
 
-            console.log(insertProviderRowResult);
+            console.log("inserted new user in provider: ", {
+              insertProviderRowResult,
+            });
 
             userId = newUser.id;
+          } else {
+            throw new TRPCError({
+              message: "Could not create user",
+              code: "BAD_REQUEST",
+            });
           }
-          throw new TRPCError({
-            message: "Could not create user",
-            code: "BAD_REQUEST",
-          });
         } else {
           userId = result.userId;
         }
-
-        console.log({ userId });
 
         if (userId.length > 0) {
           try {
             const session = await lucia.createSession(userId, {});
             const sessionCookie = lucia.createSessionCookie(session.id);
-            console.log({ session });
-            ctx.honoCtx.header("x-session", sessionCookie.serialize());
+            ctx.headers.set("Set-Cookie", sessionCookie.serialize());
+            console.log("created session: ", { session });
           } catch (e) {
             console.log(e);
           }
 
           return userInfo.data;
         }
-
-        //create session
-
         return userInfo.data;
       }
       throw new TRPCError({ code: "UNAUTHORIZED" });

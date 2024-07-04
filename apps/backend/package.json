@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package.json",
   "name": "@deal-findr/backend",
   "version": "0.0.0",
   "private": true,
@@ -39,7 +40,7 @@
     "@types/node": "^20.8.9",
     "drizzle-kit": "^0.22.7",
     "tsx": "^4.7.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.5.2"
   },
   "engines": {
     "node": ">=20"

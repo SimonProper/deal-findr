@@ -5,10 +5,12 @@ import { api } from "../trpc/react";
 
 const ClientComponent = () => {
   const [greetings, result] = api.products.getProduct.useSuspenseQuery();
+  const whoAmIResult = api.user.whoAmI.useQuery();
 
   return (
     <div>
       <h2>{greetings.msg}</h2>
+      {whoAmIResult.isSuccess && <div>{whoAmIResult.data?.firstName}</div>}
       <Link
         href={{
           pathname: "https://accounts.google.com/o/oauth2/v2/auth",
