@@ -7,8 +7,8 @@
     "moduleResolution": "NodeNext",
     "paths": {
       // Can't use aliases with monorepo for trpc inferense to work...
-      "@/*": ["./src/*"],
-      "@lib/*": ["./src/lib/*"]
+      // "@/*": ["./src/*"],
+      // "@lib/*": ["./src/lib/*"]
     }
   },
   "exclude": ["node_modules"],

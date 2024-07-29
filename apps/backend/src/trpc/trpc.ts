@@ -17,6 +17,7 @@ import { db } from "../lib/db/index.ts";
 import { getCookie } from "hono/cookie";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { lucia } from "../lib/auth/lucia.ts";
+import type { UserTable } from "../lib/db/schema/user.ts";
 
 /**
  * 1. CONTEXT
@@ -87,6 +88,45 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
+// Middleware that handles authentication of users
+const authMiddleware = (allowedUserTypes: {
+  [key in UserTable["role"]]: boolean;
+}) =>
+  t.middleware(async ({ ctx, next }) => {
+    const sessionId = getCookie(ctx.honoCtx, lucia.sessionCookieName);
+
+    if (!sessionId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    const { session, user } = await lucia.validateSession(sessionId);
+
+    console.log({ user });
+
+    if (!session) {
+      const sessionCookie = lucia.createBlankSessionCookie();
+      ctx.headers.set("Set-Cookie", sessionCookie.serialize());
+    }
+
+    if (!user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    // wrong type of user
+    if (!allowedUserTypes[user.role]) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    if (session && session.fresh) {
+      const sessionCookie = lucia.createSessionCookie(session.id);
+      ctx.headers.set("Set-Cookie", sessionCookie.serialize());
+    }
+
+    return next({
+      ctx: { ...ctx, user },
+    });
+  });
+
 /**
  * Protected (authenticated) procedure
  *
@@ -95,27 +135,11 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
-  const sessionId = getCookie(ctx.honoCtx, lucia.sessionCookieName);
-  if (!sessionId) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
-  }
+export const protectedProcedure = t.procedure.use(
+  authMiddleware({ customer: true, admin: true }),
+);
 
-  const { session, user } = await lucia.validateSession(sessionId);
-
-  if (!session) {
-    const sessionCookie = lucia.createBlankSessionCookie();
-    ctx.headers.set("Set-Cookie", sessionCookie.serialize());
-  }
-
-  if (session && session.fresh) {
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    ctx.headers.set("Set-Cookie", sessionCookie.serialize());
-  }
-
-  if (!user) throw new TRPCError({ code: "UNAUTHORIZED" });
-
-  return next({
-    ctx: { ...ctx, user },
-  });
-});
+// Only allowed for admin users
+export const adminProcedure = t.procedure.use(
+  authMiddleware({ customer: false, admin: true }),
+);

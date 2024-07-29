@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -9,10 +10,13 @@ export const userRouter = createTRPCRouter({
     return ctx.db.query.userTable.findMany();
   }),
   whoAmI: protectedProcedure.query(async ({ ctx: { db, user } }) => {
-    const test = await db.query.userTable.findFirst({
+    const userResult = await db.query.userTable.findFirst({
       where: (userRow, { eq }) => eq(userRow.id, user.id),
     });
-    console.log({ whoAmI: test });
-    return test;
+    if (!userResult) throw new TRPCError({ code: "NOT_FOUND" });
+
+    const { lastName, firstName, id, profilePictureUrl, email } = userResult;
+
+    return { lastName, firstName, id, profilePictureUrl, email };
   }),
 });

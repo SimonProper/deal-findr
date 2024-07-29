@@ -1,5 +1,6 @@
 import { Lucia } from "lucia";
 import { adapter } from "../db/index.ts";
+import { userTable } from "../db/schema/user.ts";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -10,9 +11,10 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes: (attributes) => {
     return {
-      // attributes has the type of DatabaseUserAttributes
-      googleId: attributes.google_id,
-      username: attributes.username,
+      firstName: attributes.firstName,
+      lastName: attributes.lastName,
+      role: attributes.role,
+      isAdmin: attributes.role === "admin",
     };
   },
 });
@@ -24,7 +26,4 @@ declare module "lucia" {
   }
 }
 
-interface DatabaseUserAttributes {
-  google_id: number;
-  username: string;
-}
+type DatabaseUserAttributes = typeof userTable.$inferSelect;
