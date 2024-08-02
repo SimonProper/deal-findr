@@ -1,26 +1,16 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "../trpc.ts";
-import { env } from "../../env.ts";
-import { decode } from "hono/jwt";
-import { providerTable } from "../../lib/db/schema/auth.ts";
-import { insertUser } from "../../lib/user.ts";
+import { getUserByProviderId } from "../../lib/user.ts";
 import { lucia } from "../../lib/auth/lucia.ts";
-
-const GoogleResponseSchema = z.object({
-  id_token: z.string(),
-});
-
-const googleOIDCJWTSchema = z.object({
-  sub: z.string(),
-  email: z.string(),
-  given_name: z.string(),
-  family_name: z.string(),
-  picture: z.string(),
-});
+import {
+  decodeOIDCToken,
+  verifyOIDCCode,
+  createNewUser,
+} from "../../lib/auth/OIDC.ts";
 
 export const authRouter = createTRPCRouter({
-  getAuthProviders: publicProcedure.query(async ({ ctx }) => {
+  getAuthProviders: publicProcedure.query(async () => {
     return {
       google: { url: "" },
     };
@@ -28,102 +18,60 @@ export const authRouter = createTRPCRouter({
   verifyAuth: publicProcedure
     .input(z.object({ code: z.string().min(1) }))
     .mutation(async ({ input, ctx }) => {
-      const response = await fetch(
-        new URL("https://oauth2.googleapis.com/token"),
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-          },
-          body: new URLSearchParams({
-            client_id: env.GOOGLE_CLIENT_ID,
-            client_secret: env.GOOGLE_CLIENT_SECRET,
-            grant_type: "authorization_code",
-            code: input.code,
-            redirect_uri: "http://localhost:3000/auth/callback/google",
-          }),
-        },
-      );
-      const data = GoogleResponseSchema.safeParse(await response.json());
+      const response = await verifyOIDCCode(input.code);
 
-      console.log({ response });
+      if (response.success) {
+        const userInfo = decodeOIDCToken(response.data.id_token);
 
-      if (data.success) {
-        const userInfo = googleOIDCJWTSchema.safeParse(
-          decode(data.data.id_token).payload,
-        );
-
-        if (!userInfo.success)
+        if (!userInfo.ok)
           throw new TRPCError({
             message: userInfo.error.message,
             code: "UNAUTHORIZED",
           });
 
-        const result = await ctx.db.query.providerTable.findFirst({
-          where: (providerRow, { eq }) =>
-            eq(providerRow.providerId, userInfo.data.sub),
-          with: { user: true },
-        });
+        const result = await getUserByProviderId(userInfo.value.sub, "google");
 
-        let userId: string = "";
-
-        console.log({ result });
+        let userId: string;
 
         // User is not added
-        if (!result) {
-          // create new user
-          const insertUserResult = await insertUser({
-            firstName: userInfo.data.given_name,
-            lastName: userInfo.data.family_name,
-            role: "customer",
-            email: userInfo.data.email,
-            profilePictureUrl: userInfo.data.picture,
-            createdAt: new Date(),
-            updatedAt: new Date(),
+        if (!result.ok) {
+          const newUserResult = await createNewUser({
+            userInfo: {
+              firstName: userInfo.value.given_name,
+              lastName: userInfo.value.family_name,
+              email: userInfo.value.email,
+              profilePictureUrl: userInfo.value.picture,
+              sub: userInfo.value.sub,
+            },
           });
 
-          const newUser = insertUserResult.at(0);
-          console.log("inserted user: ", { newUser });
-
-          if (newUser) {
-            const insertProviderRowResult = await ctx.db
-              .insert(providerTable)
-              .values({
-                providerId: userInfo.data.sub,
-                provider: "google",
-                userId: newUser.id,
-              })
-              .returning();
-
-            console.log("inserted new user in provider: ", {
-              insertProviderRowResult,
-            });
-
-            userId = newUser.id;
-          } else {
+          if (!newUserResult.ok) {
             throw new TRPCError({
-              message: "Could not create user",
+              message: newUserResult.error.message,
               code: "BAD_REQUEST",
             });
           }
+          userId = newUserResult.value.userId;
         } else {
-          userId = result.userId;
+          userId = result.value.userId;
         }
 
-        if (userId.length > 0) {
-          try {
-            const session = await lucia.createSession(userId, {});
-            const sessionCookie = lucia.createSessionCookie(session.id);
-            ctx.headers.set("Set-Cookie", sessionCookie.serialize());
-            console.log("created session: ", { session });
-          } catch (e) {
-            console.log(e);
-          }
-
-          return userInfo.data;
+        try {
+          const session = await lucia.createSession(userId, {});
+          const sessionCookie = lucia.createSessionCookie(session.id);
+          ctx.headers.set("Set-Cookie", sessionCookie.serialize());
+        } catch (e) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "Could not verify user",
+          });
         }
-        return userInfo.data;
+
+        return userInfo.value;
       }
-      throw new TRPCError({ code: "UNAUTHORIZED" });
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Could not verify user",
+      });
     }),
 });

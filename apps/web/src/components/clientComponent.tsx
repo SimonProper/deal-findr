@@ -4,7 +4,7 @@ import Link from "next/link";
 import { api } from "../trpc/react";
 
 const ClientComponent = () => {
-  const [greetings, result] = api.products.getProduct.useSuspenseQuery();
+  const [greetings] = api.products.getProduct.useSuspenseQuery();
   const whoAmIResult = api.user.whoAmI.useQuery();
 
   return (

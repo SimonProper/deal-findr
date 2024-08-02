@@ -13,7 +13,12 @@ export const sessionTable = pgTable("session", {
   }).notNull(),
 });
 
-export const open_id_provider = pgEnum("oauth_provider", ["google", "apple"]);
+export const open_id_provider = pgEnum("oauth_provider", [
+  "google",
+  "apple",
+] as const);
+
+export type OpenIdProvider = (typeof open_id_provider.enumValues)[number];
 
 export const providerTable = pgTable("auth_provider", {
   id: uuid("id").defaultRandom().primaryKey(),

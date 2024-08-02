@@ -101,8 +101,6 @@ const authMiddleware = (allowedUserTypes: {
 
     const { session, user } = await lucia.validateSession(sessionId);
 
-    console.log({ user });
-
     if (!session) {
       const sessionCookie = lucia.createBlankSessionCookie();
       ctx.headers.set("Set-Cookie", sessionCookie.serialize());
