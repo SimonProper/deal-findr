@@ -5,7 +5,7 @@ import { api } from "../trpc/react";
 
 const ClientComponent = () => {
   const [greetings] = api.products.getProduct.useSuspenseQuery();
-  const whoAmIResult = api.user.whoAmI.useQuery();
+  const whoAmIResult = api.user.whoAmI.useQuery(undefined, { retry: false });
 
   return (
     <div>

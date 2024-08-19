@@ -121,7 +121,7 @@ const authMiddleware = (allowedUserTypes: {
     }
 
     return next({
-      ctx: { ...ctx, user },
+      ctx: { ...ctx, user, session },
     });
   });
 

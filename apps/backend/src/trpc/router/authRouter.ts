@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, publicProcedure } from "../trpc.ts";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "../trpc.ts";
 import { getUserByProviderId } from "../../lib/user.ts";
 import { lucia } from "../../lib/auth/lucia.ts";
 import {
@@ -74,4 +78,18 @@ export const authRouter = createTRPCRouter({
         message: "Could not verify user",
       });
     }),
+  signOut: protectedProcedure.mutation(({ ctx }) => {
+    try {
+      lucia.invalidateSession(ctx.session.id);
+      const sessionCookie = lucia.createBlankSessionCookie();
+      ctx.headers.set("Set-Cookie", sessionCookie.serialize());
+    } catch (e) {
+      console.log(e);
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Could not sign out user",
+      });
+    }
+    return { msg: "Successfully signed out" };
+  }),
 });
