@@ -6,12 +6,13 @@ import {
   publicProcedure,
 } from "../trpc.ts";
 import { getUserByProviderId } from "../../lib/user.ts";
-import { lucia } from "../../lib/auth/lucia.ts";
+import { lucia, safeCreateSession } from "../../lib/auth/lucia.ts";
 import {
   decodeOIDCToken,
   verifyOIDCCode,
   createNewUser,
 } from "../../lib/auth/OIDC.ts";
+import { fromAsyncThrowable, fromThrowable, ok } from "neverthrow";
 
 export const authRouter = createTRPCRouter({
   getAuthProviders: publicProcedure.query(async () => {
@@ -24,59 +25,66 @@ export const authRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const response = await verifyOIDCCode(input.code);
 
-      if (response.success) {
-        const userInfo = decodeOIDCToken(response.data.id_token);
+      if (response.isErr()) {
+        console.log("response err");
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Could not verify user",
+        });
+      }
 
-        if (!userInfo.ok)
+      const userInfo = decodeOIDCToken(response.value.id_token);
+
+      if (userInfo.isErr()) {
+        console.log("userinof err");
+        throw new TRPCError({
+          message: userInfo.error.message,
+          code: "UNAUTHORIZED",
+        });
+      }
+
+      const result = await getUserByProviderId(userInfo.value.sub, "google");
+
+      let userId: string;
+
+      // User is not added
+      if (result.isErr()) {
+        const newUserResult = await createNewUser({
+          userInfo: {
+            firstName: userInfo.value.given_name,
+            lastName: userInfo.value.family_name,
+            email: userInfo.value.email,
+            profilePictureUrl: userInfo.value.picture,
+            sub: userInfo.value.sub,
+          },
+        });
+
+        if (newUserResult.isErr()) {
           throw new TRPCError({
-            message: userInfo.error.message,
-            code: "UNAUTHORIZED",
+            message: newUserResult.error.message,
+            code: "BAD_REQUEST",
           });
-
-        const result = await getUserByProviderId(userInfo.value.sub, "google");
-
-        let userId: string;
-
-        // User is not added
-        if (!result.ok) {
-          const newUserResult = await createNewUser({
-            userInfo: {
-              firstName: userInfo.value.given_name,
-              lastName: userInfo.value.family_name,
-              email: userInfo.value.email,
-              profilePictureUrl: userInfo.value.picture,
-              sub: userInfo.value.sub,
-            },
-          });
-
-          if (!newUserResult.ok) {
-            throw new TRPCError({
-              message: newUserResult.error.message,
-              code: "BAD_REQUEST",
-            });
-          }
-          userId = newUserResult.value.userId;
-        } else {
-          userId = result.value.userId;
         }
+        userId = newUserResult.value.userId;
+      } else {
+        userId = result.value.userId;
+      }
 
-        try {
-          const session = await lucia.createSession(userId, {});
+      await safeCreateSession(userId)
+        .andThen((session) => {
           const sessionCookie = lucia.createSessionCookie(session.id);
           ctx.headers.set("Set-Cookie", sessionCookie.serialize());
-        } catch (e) {
+          return ok("");
+        })
+        .mapErr((error) => {
+          console.log("map err");
           throw new TRPCError({
             code: "BAD_REQUEST",
-            message: "Could not verify user",
+            message: error.message,
           });
-        }
+        });
 
-        return userInfo.value;
-      }
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "Could not verify user",
-      });
+      return userInfo.value;
     }),
   signOut: protectedProcedure.mutation(({ ctx }) => {
     try {

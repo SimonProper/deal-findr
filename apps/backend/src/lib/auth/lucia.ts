@@ -1,6 +1,7 @@
 import { Lucia } from "lucia";
 import { adapter } from "../db/index.ts";
 import { userTable } from "../db/schema/user.ts";
+import { fromAsyncThrowable } from "neverthrow";
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -27,3 +28,8 @@ declare module "lucia" {
 }
 
 type DatabaseUserAttributes = typeof userTable.$inferSelect;
+
+export const safeCreateSession = fromAsyncThrowable(
+  (userId: string) => lucia.createSession(userId, {}),
+  (e) => new Error(`Could not create session: ${e}`),
+);

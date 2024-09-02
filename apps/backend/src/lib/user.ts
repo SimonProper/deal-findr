@@ -1,35 +1,36 @@
 import { db } from "./db/index.ts";
 import type { OpenIdProvider, providerTable } from "./db/schema/auth.ts";
 import { userTable } from "./db/schema/user.ts";
-import { err, ok, type AsyncResult } from "./result.ts";
+import { err, fromPromise, ok, type ResultAsync } from "neverthrow";
 
 type NewUser = typeof userTable.$inferInsert;
 type InsertUserValue = typeof userTable.$inferSelect;
 
-export const insertUser = async (
+export const insertUser = (
   user: NewUser,
   trx = db,
-): AsyncResult<InsertUserValue> => {
-  const result = await trx.insert(userTable).values(user).returning();
-
-  const newUser = result.at(0);
-
-  if (newUser) return ok(newUser);
-  return err(new Error("could not insert user"));
+): ResultAsync<InsertUserValue, Error> => {
+  return fromPromise(
+    trx.insert(userTable).values(user).returning(),
+    () => new Error("could not insert user"),
+  ).andThen((res) => {
+    const newUser = res.at(0);
+    return newUser ? ok(newUser) : err(new Error("could not insert user"));
+  });
 };
 
-export const getUserByProviderId = async (
+export const getUserByProviderId = (
   providerId: string,
   provider: OpenIdProvider,
   trx = db,
-): AsyncResult<typeof providerTable.$inferSelect> => {
-  const result = await trx.query.providerTable.findFirst({
-    where: (providerRow, { eq }) =>
-      eq(providerRow.providerId, providerId) &&
-      eq(providerRow.provider, provider),
-    with: { user: true },
-  });
-
-  if (result) return ok(result);
-  return err(new Error("Could not find user"));
+): ResultAsync<typeof providerTable.$inferSelect, Error> => {
+  return fromPromise(
+    trx.query.providerTable.findFirst({
+      where: (providerRow, { eq }) =>
+        eq(providerRow.providerId, providerId) &&
+        eq(providerRow.provider, provider),
+      with: { user: true },
+    }),
+    () => new Error("Could not find user"),
+  ).andThen((res) => (res ? ok(res) : err(new Error("could not insert user"))));
 };

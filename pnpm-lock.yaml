@@ -58,6 +58,9 @@ importers:
       lucia:
         specifier: ^3.2.0
         version: 3.2.0
+      neverthrow:
+        specifier: ^7.0.1
+        version: 7.0.1
       pg:
         specifier: ^8.11.4
         version: 8.11.4
@@ -11574,6 +11577,11 @@ packages:
   /netmask@2.0.2:
     resolution: {integrity: sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==}
     engines: {node: '>= 0.4.0'}
+    dev: false
+
+  /neverthrow@7.0.1:
+    resolution: {integrity: sha512-NY1sD1wZn6dwwzV9/5KZ4wRIpH4xC7ARy3fGmnEi2Pi8CHDTWlp+WSF+if8cudrwuCWGrk2y2BE/dnGh070iuA==}
+    engines: {node: '>=18'}
     dev: false
 
   /next@14.0.1(@babel/core@7.23.6)(react-dom@18.2.0)(react@18.2.0):
