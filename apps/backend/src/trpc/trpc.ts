@@ -10,11 +10,14 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import type { Context } from "hono";
-import * as trpcExpress from "@trpc/server/adapters/express";
 
 //! This must use relative import since using tsconfig paths won't work when
 // the AppRouter type is consumed in another app in the monorepo.
 import { db } from "../lib/db/index.ts";
+import { getCookie } from "hono/cookie";
+import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import { lucia } from "../lib/auth/lucia.ts";
+import type { UserTable } from "../lib/db/schema/user.ts";
 
 /**
  * 1. CONTEXT
@@ -29,12 +32,15 @@ import { db } from "../lib/db/index.ts";
  * @see https://trpc.io/docs/server/context
  */
 
-export const createTRPCContext = async ({ req, res }: Context) => {
-  const source = req.header("x-trpc-source") || "unkown";
+export const createTRPCContext = async (
+  opts: FetchCreateContextFnOptions,
+  honoCtx: Context,
+) => {
+  const source = honoCtx.req.header("x-trpc-source") || "unkown";
 
   console.log(">>> tRPC Request from", source);
 
-  return { req, res, db };
+  return { honoCtx, db, headers: opts.resHeaders };
 };
 
 /**
@@ -82,6 +88,43 @@ export const createTRPCRouter = t.router;
  */
 export const publicProcedure = t.procedure;
 
+// Middleware that handles authentication of users
+const authMiddleware = (allowedUserTypes: {
+  [key in UserTable["role"]]: boolean;
+}) =>
+  t.middleware(async ({ ctx, next }) => {
+    const sessionId = getCookie(ctx.honoCtx, lucia.sessionCookieName);
+
+    if (!sessionId) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    const { session, user } = await lucia.validateSession(sessionId);
+
+    if (!session) {
+      const sessionCookie = lucia.createBlankSessionCookie();
+      ctx.headers.set("Set-Cookie", sessionCookie.serialize());
+    }
+
+    if (!user) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    // wrong type of user
+    if (!allowedUserTypes[user.role]) {
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    if (session && session.fresh) {
+      const sessionCookie = lucia.createSessionCookie(session.id);
+      ctx.headers.set("Set-Cookie", sessionCookie.serialize());
+    }
+
+    return next({
+      ctx: { ...ctx, user, session },
+    });
+  });
+
 /**
  * Protected (authenticated) procedure
  *
@@ -90,8 +133,11 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  return next({
-    ctx: ctx,
-  });
-});
+export const protectedProcedure = t.procedure.use(
+  authMiddleware({ customer: true, admin: true }),
+);
+
+// Only allowed for admin users
+export const adminProcedure = t.procedure.use(
+  authMiddleware({ customer: false, admin: true }),
+);

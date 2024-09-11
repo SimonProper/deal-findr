@@ -9,6 +9,7 @@ import { appRouter, createTRPCContext } from "./trpc/index.ts";
 
 // Needs to be after the import of dotenv since it parses the env variables
 import "./env.ts";
+import { setCookie } from "hono/cookie";
 
 const NLYMAN_JEANS =
   "https://nlyman.com/se/produkt/woodbird-leroy-thun-black-jeans_841459-3294/";
@@ -43,11 +44,19 @@ scrapeWebPagePrice(CLAS_OHLSON, "CLAS_OHLSON"); */
 
 const app = new Hono();
 if (process.env.NODE_ENV === "development")
-  app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://localhost:3000",
+      // allowHeaders: ["x-session"],
+      exposeHeaders: ["x-session"],
+    }),
+  );
 
 app.use(async (ctx, next) => {
   // request logger
   const body = await ctx.req.parseBody();
+  setCookie(ctx, "test", "testing testing");
 
   console.log("⬅️ ", ctx.req.method, ctx.req.path, body ?? ctx.req.query);
 
@@ -58,7 +67,9 @@ app.use(
   "/trpc/*",
   trpcServer({
     router: appRouter,
-    createContext: (_opts, ctx) => createTRPCContext(ctx),
+    createContext: (opts, ctx) => {
+      return createTRPCContext(opts, ctx);
+    },
   }),
 );
 

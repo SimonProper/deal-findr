@@ -1,24 +1,55 @@
 "use client";
 
 import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 
 import type { AppRouter } from "@deal-findr/backend/src/trpc";
 
-const createQueryClient = () => new QueryClient();
+export function isTRPCClientError(
+  cause: unknown,
+): cause is TRPCClientError<AppRouter> {
+  return cause instanceof TRPCClientError;
+}
+
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry(failureCount, error) {
+          if (isTRPCClientError(error))
+            if (error.data?.code === "UNAUTHORIZED") return false;
+          if (failureCount < 2) return true;
+          return false;
+        },
+      },
+    },
+    queryCache: new QueryCache({
+      onError: (error) => {
+        if (isTRPCClientError(error)) {
+          if (error.data?.code === "UNAUTHORIZED") {
+            console.log("should redirect to signin?");
+          }
+        }
+      },
+    }),
+  });
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
 const getQueryClient = () => {
   if (typeof window === "undefined") {
     // Server: always make a new query client
     return createQueryClient();
-  } else {
-    // Browser: use singleton pattern to keep the same query client
-    return (clientQueryClientSingleton ??= createQueryClient());
   }
+
+  // Browser: use singleton pattern to keep the same query client
+  return (clientQueryClientSingleton ??= createQueryClient());
 };
 
 export const api = createTRPCReact<AppRouter>();

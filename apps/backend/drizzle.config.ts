@@ -1,11 +1,11 @@
-import { env } from "@/env.ts";
 import type { Config } from "drizzle-kit";
+import { env } from "./src/env.ts";
 
 export default {
   schema: "./src/lib/db/schema",
   out: "./drizzle",
-  driver: "pg",
+  dialect: "postgresql",
   dbCredentials: {
-    connectionString: env.DATABASE_URL,
+    url: env.DATABASE_URL,
   },
 } satisfies Config;

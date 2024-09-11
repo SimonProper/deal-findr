@@ -1,18 +1,9 @@
-"use client";
-
 import Link from "next/link";
-import { api } from "../trpc/react";
-import { useSession } from "../lib/auth/session-provider";
 
-const ClientComponent = () => {
-  const [greetings] = api.products.getProduct.useSuspenseQuery();
-  const whoAmIResult = api.user.whoAmI.useQuery(undefined, { retry: false });
-  const { data, isAuthenticated } = useSession();
-
+export default async function Home() {
   return (
-    <div>
-      <h2>{greetings.msg}</h2>
-      {isAuthenticated && <div>{data.user.firstName}</div>}
+    <main className="flex flex-col h-full w-full justify-center items-center p-24 min-h-screen">
+      <h1>Sign in</h1>
       <Link
         href={{
           pathname: "https://accounts.google.com/o/oauth2/v2/auth",
@@ -29,8 +20,6 @@ const ClientComponent = () => {
       >
         Google
       </Link>
-    </div>
+    </main>
   );
-};
-
-export default ClientComponent;
+}
