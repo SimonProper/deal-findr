@@ -1,12 +1,22 @@
 "use client";
 
+import { useSession } from "@/src/lib/auth/session-provider";
 import { api } from "@/src/trpc/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
+// Should maybe turn into a route instead of page
 export default function Page({ params }: { params: { provider: string } }) {
   const searchParams = useSearchParams();
-  const { status, data, mutate, isSuccess } = api.auth.verifyAuth.useMutation();
+  const utils = api.useUtils();
+
+  const { status, data, mutate, isSuccess } = api.auth.verifyAuth.useMutation({
+    onSuccess: () => {
+      utils.user.whoAmI.reset();
+    },
+  });
+
+  const { data: session, isAuthenticated } = useSession();
 
   const code = searchParams.get("code");
 
@@ -21,16 +31,18 @@ export default function Page({ params }: { params: { provider: string } }) {
         login
       </button>
       <p>{status}</p>
-      {isSuccess && (
+      {isSuccess && isAuthenticated && (
         <>
-          <Image
-            src={data.picture}
-            alt="profile picture"
-            height={48}
-            width={48}
-            className="rounded-full"
-          />
-          <p>{data.given_name + data.family_name}</p>
+          {session.user.profilePictureUrl && (
+            <Image
+              src={session.user.profilePictureUrl}
+              alt="profile picture"
+              height={48}
+              width={48}
+              className="rounded-full"
+            />
+          )}
+          <p>{session.user.firstName + session.user.lastName}</p>
         </>
       )}
     </div>
