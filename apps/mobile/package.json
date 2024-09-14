@@ -21,7 +21,7 @@
     "expo-splash-screen": "~0.26.4",
     "expo-status-bar": "^1.11.1",
     "nativewind": "^4.0.36",
-    "react": "^18.2.0",
+    "react": "^18.3.0",
     "react-native": "0.73.5",
     "react-native-gesture-handler": "~2.15.0",
     "react-native-reanimated": "^3.7.2",
@@ -34,7 +34,7 @@
     "@babel/core": "^7.23.3",
     "@deal-findr/backend": "workspace:*",
     "@deal-findr/tsconfig": "workspace:*",
-    "@types/react": "^18.0.22",
+    "@types/react": "^18.3.0",
     "@types/react-native": "^0.69.15",
     "typescript": "^5.2.2"
   },
