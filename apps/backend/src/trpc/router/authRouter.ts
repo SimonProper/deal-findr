@@ -70,21 +70,22 @@ export const authRouter = createTRPCRouter({
         userId = result.value.userId;
       }
 
-      await safeCreateSession(userId)
-        .andThen((session) => {
-          const sessionCookie = lucia.createSessionCookie(session.id);
-          ctx.headers.set("Set-Cookie", sessionCookie.serialize());
-          return ok("");
-        })
-        .mapErr((error) => {
-          console.log("map err");
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: error.message,
-          });
-        });
+      const session = await safeCreateSession(userId).andThen((session) => {
+        const sessionCookie = lucia.createSessionCookie(session.id);
+        ctx.headers.set("Set-Cookie", sessionCookie.serialize());
+        return ok(session);
+      });
 
-      return userInfo.value;
+      if (session.isErr()) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: session.error.message,
+        });
+      }
+
+      return {
+        userInfo: userInfo.value,
+      };
     }),
   signOut: protectedProcedure.mutation(({ ctx }) => {
     try {

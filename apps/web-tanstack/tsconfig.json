@@ -10,12 +10,15 @@
     "isolatedModules": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "incremental": true,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json",
     "target": "ES2022",
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "@/*": ["./app/*"]
     },
     "noEmit": true
   }

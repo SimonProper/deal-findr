@@ -11,18 +11,36 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
+import { Route as AuthedImport } from './routes/_authed'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthCallbackProviderImport } from './routes/auth/callback/$provider'
 
 // Create/Update Routes
+
+const LoginRoute = LoginImport.update({
+  path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LayoutRoute = LayoutImport.update({
   id: '/_layout',
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthedRoute = AuthedImport.update({
+  id: '/_authed',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthCallbackProviderRoute = AuthCallbackProviderImport.update({
+  path: '/auth/callback/$provider',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -37,11 +55,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedImport
+      parentRoute: typeof rootRoute
+    }
     '/_layout': {
       id: '/_layout'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof LayoutImport
+      parentRoute: typeof rootRoute
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/auth/callback/$provider': {
+      id: '/auth/callback/$provider'
+      path: '/auth/callback/$provider'
+      fullPath: '/auth/callback/$provider'
+      preLoaderRoute: typeof AuthCallbackProviderImport
       parentRoute: typeof rootRoute
     }
   }
@@ -52,36 +91,55 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRoute
+  '/login': typeof LoginRoute
+  '/auth/callback/$provider': typeof AuthCallbackProviderRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRoute
+  '/login': typeof LoginRoute
+  '/auth/callback/$provider': typeof AuthCallbackProviderRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_authed': typeof AuthedRoute
   '/_layout': typeof LayoutRoute
+  '/login': typeof LoginRoute
+  '/auth/callback/$provider': typeof AuthCallbackProviderRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | ''
+  fullPaths: '/' | '' | '/login' | '/auth/callback/$provider'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | ''
-  id: '__root__' | '/' | '/_layout'
+  to: '/' | '' | '/login' | '/auth/callback/$provider'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authed'
+    | '/_layout'
+    | '/login'
+    | '/auth/callback/$provider'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthedRoute: typeof AuthedRoute
   LayoutRoute: typeof LayoutRoute
+  LoginRoute: typeof LoginRoute
+  AuthCallbackProviderRoute: typeof AuthCallbackProviderRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthedRoute: AuthedRoute,
   LayoutRoute: LayoutRoute,
+  LoginRoute: LoginRoute,
+  AuthCallbackProviderRoute: AuthCallbackProviderRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +155,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_layout"
+        "/_authed",
+        "/_layout",
+        "/login",
+        "/auth/callback/$provider"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/_authed": {
+      "filePath": "_authed.tsx"
+    },
     "/_layout": {
       "filePath": "_layout.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/auth/callback/$provider": {
+      "filePath": "auth/callback/$provider.tsx"
     }
   }
 }

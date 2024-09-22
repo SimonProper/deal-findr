@@ -3,17 +3,27 @@ import {
   Outlet,
   ScrollRestoration,
   createRootRoute,
+  createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
-import { NotFound } from '~/components/NotFound'
+import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary'
+import { NotFound } from '@/components/NotFound'
+import { trpcQueryUtils } from '@/router'
 // @ts-expect-error
-import appCss from '~/styles/app.css?url'
-import { seo } from '~/utils/seo'
+import appCss from '@/styles/app.css?url'
+import { seo } from '@/utils/seo'
+import { useSession, useSignOut } from '@/context/auth/session-provider'
+import { QueryClient } from '@tanstack/react-query'
 
-export const Route = createRootRoute({
+export interface RouterAppContext {
+  queryClient: QueryClient
+  trpcQueryUtils: typeof trpcQueryUtils
+}
+
+export const Route = createRootRouteWithContext<RouterAppContext>()({
   meta: () => [
     {
       charSet: 'utf-8',
@@ -58,6 +68,10 @@ export const Route = createRootRoute({
     )
   },
   notFoundComponent: () => <NotFound />,
+  /* loader: async ({ context: { trpcQueryUtils } }) => {
+    await trpcQueryUtils.user.whoAmI.ensureData().catch((e) => console.log(e))
+    return
+  }, */
   component: RootComponent,
 })
 
@@ -70,36 +84,51 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const { data, isAuthenticated } = useSession()
+  const { mutate } = useSignOut()
   return (
     <Html>
       <Head>
         <Meta />
       </Head>
       <Body>
-        <div className="p-2 flex gap-2 text-lg">
-          <Link
-            to="."
-            activeProps={{
-              className: 'font-bold',
-            }}
-            activeOptions={{ exact: true }}
-          >
-            Home
-          </Link>{' '}
-          <Link
-            // @ts-expect-error
-            to="/this-route-does-not-exist"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            This Route Does Not Exist
-          </Link>
+        <div className="p-2 flex justify-between text-lg">
+          <div className="flex gap-2">
+            <Link
+              to="/"
+              activeProps={{
+                className: 'font-bold',
+              }}
+              activeOptions={{ exact: true }}
+            >
+              Home
+            </Link>{' '}
+            <Link
+              // @ts-expect-error
+              to="/this-route-does-not-exist"
+              activeProps={{
+                className: 'font-bold',
+              }}
+            >
+              This Route Does Not Exist
+            </Link>
+          </div>
+          {isAuthenticated ? (
+            <div className="flex gap-2">
+              <button onClick={() => mutate()}>Signout</button>
+              <p>
+                {data.user.firstName} {data.user.lastName}
+              </p>
+            </div>
+          ) : (
+            <Link to="/login">Signin</Link>
+          )}
         </div>
         <hr />
         {children}
         <ScrollRestoration />
-        <TanStackRouterDevtools position="bottom-right" />
+        <TanStackRouterDevtools position="bottom-left" />
+        <ReactQueryDevtools position="bottom" buttonPosition="bottom-right" />
         <Scripts />
       </Body>
     </Html>

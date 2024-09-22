@@ -12,19 +12,28 @@
     "test:e2e": "playwright test --project=chromium"
   },
   "dependencies": {
-    "@tanstack/react-router": "^1.57.9",
+    "@tanstack/react-query": "^5.22.2",
+    "@tanstack/react-query-devtools": "^5.55.2",
+    "@tanstack/react-router": "^1.58.3",
     "@tanstack/router-devtools": "^1.57.9",
     "@tanstack/router-plugin": "^1.57.9",
-    "@tanstack/start": "^1.57.9",
+    "@tanstack/router-zod-adapter": "^1.58.3",
+    "@tanstack/start": "^1.58.5",
+    "@trpc/client": "11.0.0-next-beta.294",
+    "@trpc/react-query": "11.0.0-next-beta.294",
+    "@trpc/server": "11.0.0-next-beta.294",
     "@vitejs/plugin-react": "^4.3.1",
     "isbot": "^5.1.14",
+    "neverthrow": "^7.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "redaxios": "^0.5.1",
     "tailwind-merge": "^2.5.2",
-    "vinxi": "0.4.2"
+    "vinxi": "0.4.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@deal-findr/backend": "workspace:*",
     "@playwright/test": "^1.46.1",
     "@types/node": "^22.5.4",
     "@types/react": "^18.3.0",
