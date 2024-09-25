@@ -27,7 +27,8 @@ dist
 .vercel
 
 # typescript
-*.tsbuildinfo
+dist/
+.cache
 
 # turbo 
 *.turbo
