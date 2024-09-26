@@ -8,6 +8,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "allowImportingTsExtensions": true,
+
+    "incremental": true,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "tsBuildInfoFile": "${configDir}/.cache/tsbuildinfo.json",
+
     "inlineSources": false,
     "isolatedModules": true,
     "moduleResolution": "NodeNext",
@@ -23,7 +28,8 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "noEmit": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "checkJs": true
   },
   "exclude": ["node_modules"]
 }

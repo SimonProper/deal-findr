@@ -1,17 +1,16 @@
 {
-  "exclude": ["node_modules"],
-  "extends": "@deal-findr/tsconfig/nextjs.json",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "extends": "@deal-findr/tsconfig/base.json",
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "target": "ES2022",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@lib/*": ["./src/lib/*"]
-    },
-    "outDir": "dist",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
-  "include": ["src", "next-env.d.ts", ".next/types/**/*.ts"]
+      "@/*": ["./app/*"]
+    }
+  }
 }
