@@ -5,7 +5,7 @@ import { NotFound } from './components/NotFound'
 import { getQueryClient, trpc, trpcClient } from './trpc/react'
 import { createTRPCQueryUtils } from '@trpc/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { SessionProvider } from './context/auth/session-provider'
 
 export const trpcQueryUtils = createTRPCQueryUtils({

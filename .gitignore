@@ -34,7 +34,10 @@ dist/
 *.turbo
 
 # expo
-*.expo
+.expo/
+apps/mobile/.gitignore
+apps/mobile/ios
+apps/mobile/android
 
 # android studio
 .idea

@@ -1,5 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@deal-findr/tsconfig/base.json",
   "compilerOptions": {
     "lib": ["es2022"],
     "module": "NodeNext",
@@ -12,6 +13,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "extends": "@deal-findr/tsconfig/base.json",
   "include": ["**/*.ts"]
 }

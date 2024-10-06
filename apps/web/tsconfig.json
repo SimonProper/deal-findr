@@ -4,10 +4,11 @@
   "extends": "@deal-findr/tsconfig/base.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "module": "ESNext",
     "moduleResolution": "Bundler",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "target": "ES2022",
+    "module": "ESNext",
+    "target": "ESNext",
+    "skipLibCheck": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./app/*"]

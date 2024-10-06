@@ -1,6 +1,20 @@
 {
-  "extends": "expo/tsconfig.base",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": ["@deal-findr/tsconfig/base.json"],
+  // "extends": ["expo/tsconfig.base"],
   "compilerOptions": {
-    "strict": true
-  }
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    "jsx": "react-native",
+    "verbatimModuleSyntax": false,
+    "types": ["nativewind/types"],
+    "checkJs": false,
+    "allowImportingTsExtensions": true,
+    "moduleSuffixes": [".ios", ".android", ".native", ""]
+  },
+  "include": ["src", "*.ts", "*.js", ".expo/types/**/*.ts", "expo-env.d.ts"],
+  "exclude": ["node_modules"]
 }

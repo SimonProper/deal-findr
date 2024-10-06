@@ -4,46 +4,42 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "deal-findr",
   slug: "deal-findr",
+  scheme: "deal-findr-schema",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/icon.png",
-  userInterfaceStyle: "light",
+  userInterfaceStyle: "automatic",
   splash: {
-    image: "./assets/splash.png",
+    image: "./assets/icon.png",
     resizeMode: "contain",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#1F104A",
   },
   updates: {
     fallbackToCacheTimeout: 0,
   },
   assetBundlePatterns: ["**/*"],
   ios: {
-    supportsTablet: true,
     bundleIdentifier: "com.deal-findr.mobile",
+    supportsTablet: true,
   },
   android: {
-    adaptiveIcon: {
-      foregroundImage: "./assets/adaptive-icon.png",
-      backgroundColor: "#FFFFFF",
-    },
     package: "com.deal_findr.mobile",
+    adaptiveIcon: {
+      foregroundImage: "./assets/icon.png",
+      backgroundColor: "#1F104A",
+    },
   },
-  web: {
-    favicon: "./assets/favicon.png",
+  experiments: {
+    tsconfigPaths: true,
+    typedRoutes: true,
   },
   plugins: [
+    "expo-router",
     [
-      "expo-share-intent",
+      "expo-dev-launcher",
       {
-        activationRules: {
-          NSExtensionActivationSupportsText: true,
-          NSExtensionActivationSupportsWebURLWithMaxCount: 1,
-          NSExtensionActivationSupportsWebPageWithMaxCount: 1,
-        },
-        androidIntentFilters: ["text/*", "image/*"],
+        launchMode: "most-recent",
       },
     ],
-    "expo-router",
   ],
-  scheme: "deal-findr-schema",
 });
