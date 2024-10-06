@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-query'
 import { httpBatchLink, loggerLink, TRPCClientError } from '@trpc/client'
 import { createTRPCReact } from '@trpc/react-query'
-import SuperJSON from 'superjson'
+import superJSON from 'superjson'
 
 import type { AppRouter } from '@deal-findr/backend/src/trpc'
 
@@ -56,7 +56,7 @@ export const trpc = createTRPCReact<AppRouter>()
 export const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
-      transformer: SuperJSON,
+      transformer: superJSON,
       url: 'http://localhost:4000/trpc',
       // You can pass any HTTP headers you wish here
       async headers() {
