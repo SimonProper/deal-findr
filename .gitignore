@@ -35,6 +35,7 @@ dist/
 
 # expo
 .expo/
+expo-env.d.ts
 apps/mobile/.gitignore
 apps/mobile/ios
 apps/mobile/android
