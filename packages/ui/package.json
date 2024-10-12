@@ -24,11 +24,11 @@
   "devDependencies": {
     "@deal-findr/jest-presets": "workspace:*",
     "@deal-findr/tsconfig": "workspace:*",
-    "@types/react": "^18.3.0",
-    "@types/react-dom": "^18.3.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "@types/react": "catalog:react18",
+    "@types/react-dom": "catalog:react18",
+    "react": "catalog:react18",
+    "react-dom": "catalog:react18",
     "tsup": "^8.1.0",
-    "typescript": "^5.6.2"
+    "typescript": "catalog:"
   }
 }

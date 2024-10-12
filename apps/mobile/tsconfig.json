@@ -1,7 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": ["@deal-findr/tsconfig/base.json"],
-  // "extends": ["expo/tsconfig.base"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
