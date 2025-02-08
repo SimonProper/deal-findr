@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
+import {} from '@tanstack/start'
 
 export const Route = createFileRoute('/login')({
   component: Login,

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
-    "clean": "git clean -xdf .cache .expo .turbo node_modules",
+    "clean": "git clean -xdf .cache .expo .turbo node_modules -e /.env",
     "build": "vinxi build",
     "start": "vinxi start",
     "lint": "prettier --check '**/*' --ignore-unknown && eslint --ext .ts,.tsx ./app",
