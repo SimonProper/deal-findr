@@ -3,29 +3,26 @@ import { useRouter } from "expo-router";
 import * as Browser from "expo-web-browser";
 
 import { api } from "./api";
-import { getBaseUrl } from "./base-url";
 import { deleteToken, setToken } from "./session-store";
 
 export const signIn = async () => {
-  const signInUrl = `${getBaseUrl()}/api/auth/signin`;
-  const redirectTo = Linking.createURL("/login");
-  const result = await Browser.openAuthSessionAsync(
-    `${signInUrl}?expo-redirect=${encodeURIComponent(redirectTo)}`,
-    redirectTo,
-  );
+  const redirectTo = Linking.createURL("login");
+  const signInUrl = `http:localhost:3000/auth/mobile?expo-redirect=${redirectTo}`;
+
+  const result = await Browser.openAuthSessionAsync(`${signInUrl}`, redirectTo);
 
   if (result.type !== "success") return;
   const url = Linking.parse(result.url);
-  const sessionToken = String(url.queryParams?.session_token);
+  const sessionToken = String(url.queryParams?.auth_session);
+  console.log({ sessionToken });
   if (!sessionToken) return;
 
   setToken(sessionToken);
 };
 
 export const useUser = () => {
-  // const { data: session } = api.auth.getSession.useQuery();
-  // return session?.user ?? null;
-  return;
+  const { data: session } = api.user.whoAmI.useQuery();
+  return session ?? null;
 };
 
 export const useSignIn = () => {
@@ -46,7 +43,6 @@ export const useSignOut = () => {
 
   return async () => {
     const res = await signOut.mutateAsync();
-    // if (!res.success) return;
     await deleteToken();
     await utils.invalidate();
     router.replace("/");

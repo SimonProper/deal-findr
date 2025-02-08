@@ -7,32 +7,38 @@ settings:
 catalogs:
   default:
     '@tanstack/react-query':
-      specifier: ^5.51.23
+      specifier: ^5.59.0
       version: 5.59.0
     '@trpc/client':
-      specifier: ^11.0.0-rc.477
-      version: 11.0.0-rc.553
+      specifier: next
+      version: 11.0.0-rc.571
     '@trpc/react-query':
-      specifier: ^11.0.0-rc.477
-      version: 11.0.0-rc.553
+      specifier: next
+      version: 11.0.0-rc.571
     '@trpc/server':
-      specifier: ^11.0.0-rc.477
-      version: 11.0.0-rc.553
+      specifier: next
+      version: 11.0.0-rc.571
     eslint:
       specifier: ^9.9.0
       version: 9.11.1
     prettier:
       specifier: ^3.3.3
       version: 3.3.3
+    superjson:
+      specifier: ^2.2.1
+      version: 2.2.1
     tailwindcss:
       specifier: ^3.4.10
       version: 3.4.13
     typescript:
-      specifier: ^5.5.4
+      specifier: ^5.6
       version: 5.6.2
+    zod:
+      specifier: ^3.23.8
+      version: 3.23.8
   react18:
     '@types/react':
-      specifier: ^18.3.3
+      specifier: ^18.3.11
       version: 18.3.11
     '@types/react-dom':
       specifier: ^18.3.0
@@ -76,7 +82,7 @@ importers:
         version: 1.13.1(hono@4.6.3)
       '@hono/trpc-server':
         specifier: ^0.3.0
-        version: 0.3.2(@trpc/server@11.0.0-next-beta.294)(hono@4.6.3)
+        version: 0.3.2(@trpc/server@11.0.0-rc.571)(hono@4.6.3)
       '@lucia-auth/adapter-drizzle':
         specifier: ^1.0.7
         version: 1.1.0(drizzle-orm@0.33.0(@types/react@18.3.11)(pg@8.13.0)(postgres@3.4.4)(react@18.3.1))(lucia@3.2.0)
@@ -84,8 +90,8 @@ importers:
         specifier: ^0.9.2
         version: 0.9.2(typescript@5.6.2)(zod@3.23.8)
       '@trpc/server':
-        specifier: 11.0.0-next-beta.294
-        version: 11.0.0-next-beta.294
+        specifier: 'catalog:'
+        version: 11.0.0-rc.571
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -111,10 +117,10 @@ importers:
         specifier: ^21.5.0
         version: 21.11.0(typescript@5.6.2)
       superjson:
-        specifier: ^2.2.1
+        specifier: 'catalog:'
         version: 2.2.1
       zod:
-        specifier: ^3.22.4
+        specifier: 'catalog:'
         version: 3.23.8
     devDependencies:
       '@deal-findr/jest-presets':
@@ -132,11 +138,8 @@ importers:
       drizzle-kit:
         specifier: ^0.22.7
         version: 0.22.8
-      tsx:
-        specifier: ^4.7.1
-        version: 4.19.1
       typescript:
-        specifier: ^5.5.2
+        specifier: 'catalog:'
         version: 5.6.2
 
   apps/mobile:
@@ -151,23 +154,29 @@ importers:
         specifier: 1.6.4
         version: 1.6.4(@babel/runtime@7.25.7)(react-native@0.74.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.3.11)(react@18.3.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.56.2
+        specifier: 'catalog:'
         version: 5.59.0(react@18.3.1)
       '@trpc/client':
-        specifier: 11.0.0-next-beta.294
-        version: 11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294)
+        specifier: 'catalog:'
+        version: 11.0.0-rc.571(@trpc/server@11.0.0-rc.571)
       '@trpc/react-query':
-        specifier: 11.0.0-next-beta.294
-        version: 11.0.0-next-beta.294(@tanstack/react-query@5.59.0(react@18.3.1))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/server@11.0.0-next-beta.294)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 'catalog:'
+        version: 11.0.0-rc.571(@tanstack/react-query@5.59.0(react@18.3.1))(@trpc/client@11.0.0-rc.571(@trpc/server@11.0.0-rc.571))(@trpc/server@11.0.0-rc.571)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@trpc/server':
-        specifier: 11.0.0-next-beta.294
-        version: 11.0.0-next-beta.294
+        specifier: 'catalog:'
+        version: 11.0.0-rc.571
       expo:
         specifier: ~51.0.34
         version: 51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))
+      expo-auth-session:
+        specifier: ^5.5.2
+        version: 5.5.2(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
       expo-constants:
         specifier: ~16.0.2
         version: 16.0.2(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
+      expo-crypto:
+        specifier: ^13.0.2
+        version: 13.0.2(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
       expo-dev-client:
         specifier: ^4.0.27
         version: 4.0.27(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
@@ -217,8 +226,11 @@ importers:
         specifier: 3.31.1
         version: 3.31.1(react-native@0.74.6(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))(@types/react@18.3.11)(react@18.3.1))(react@18.3.1)
       superjson:
-        specifier: 2.2.1
+        specifier: 'catalog:'
         version: 2.2.1
+      zod:
+        specifier: 'catalog:'
+        version: 3.23.8
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -270,16 +282,13 @@ importers:
         version: 1.58.18(@types/node@22.7.4)(ioredis@5.4.1)(lightningcss@1.22.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(terser@5.34.1)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.4)(lightningcss@1.22.0)(terser@5.34.1))
       '@trpc/client':
         specifier: 'catalog:'
-        version: 11.0.0-rc.553(@trpc/server@11.0.0-rc.553)
+        version: 11.0.0-rc.571(@trpc/server@11.0.0-rc.571)
       '@trpc/react-query':
         specifier: 'catalog:'
-        version: 11.0.0-rc.553(@tanstack/react-query@5.59.0(react@18.3.1))(@trpc/client@11.0.0-rc.553(@trpc/server@11.0.0-rc.553))(@trpc/server@11.0.0-rc.553)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 11.0.0-rc.571(@tanstack/react-query@5.59.0(react@18.3.1))(@trpc/client@11.0.0-rc.571(@trpc/server@11.0.0-rc.571))(@trpc/server@11.0.0-rc.571)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@trpc/server':
         specifier: 'catalog:'
-        version: 11.0.0-rc.553
-      '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.2(vite@5.4.8(@types/node@22.7.4)(lightningcss@1.22.0)(terser@5.34.1))
+        version: 11.0.0-rc.571
       isbot:
         specifier: ^5.1.17
         version: 5.1.17
@@ -287,16 +296,16 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       react:
-        specifier: ^18.3.1
+        specifier: catalog:react18
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: catalog:react18
         version: 18.3.1(react@18.3.1)
       redaxios:
         specifier: ^0.5.1
         version: 0.5.1
       superjson:
-        specifier: ^2.2.1
+        specifier: 'catalog:'
         version: 2.2.1
       tailwind-merge:
         specifier: ^2.5.2
@@ -305,7 +314,7 @@ importers:
         specifier: 0.4.2
         version: 0.4.2(@types/node@22.7.4)(ioredis@5.4.1)(lightningcss@1.22.0)(terser@5.34.1)
       zod:
-        specifier: ^3.23.8
+        specifier: 'catalog:'
         version: 3.23.8
     devDependencies:
       '@deal-findr/backend':
@@ -326,6 +335,9 @@ importers:
       '@types/react-dom':
         specifier: catalog:react18
         version: 18.3.0
+      '@vitejs/plugin-react':
+        specifier: ^4.3.1
+        version: 4.3.2(vite@5.4.8(@types/node@22.7.4)(lightningcss@1.22.0)(terser@5.34.1))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -369,22 +381,22 @@ importers:
         specifier: workspace:*
         version: link:../tsconfig
       '@types/react':
-        specifier: ^18.3.0
+        specifier: catalog:react18
         version: 18.3.11
       '@types/react-dom':
-        specifier: ^18.3.0
+        specifier: catalog:react18
         version: 18.3.0
       react:
-        specifier: ^18.3.1
+        specifier: catalog:react18
         version: 18.3.1
       react-dom:
-        specifier: ^18.3.1
+        specifier: catalog:react18
         version: 18.3.1(react@18.3.1)
       tsup:
         specifier: ^8.1.0
         version: 8.3.0(jiti@2.1.2)(postcss@8.4.47)(tsx@4.19.1)(typescript@5.6.2)(yaml@2.5.1)
       typescript:
-        specifier: ^5.6.2
+        specifier: 'catalog:'
         version: 5.6.2
 
 packages:
@@ -2999,39 +3011,22 @@ packages:
   '@tootallnate/quickjs-emscripten@0.23.0':
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
 
-  '@trpc/client@11.0.0-next-beta.294':
-    resolution: {integrity: sha512-9rK+bwg7TPNsvisDAanaAiR2TYmgFA2zNll4TexUGKQaQ09dt6ZPdFDqWIZqa33cyoXeK9Z5LQptr3NVfaSjNA==}
+  '@trpc/client@11.0.0-rc.571':
+    resolution: {integrity: sha512-mUX47avAwgkirC91rtnde7B8QVbvd+121wgud3q22gYBI1hrGFn8isFwXdPquVneXNL5p1JjfhpZzDwzHmUJ4Q==}
     peerDependencies:
-      '@trpc/server': 11.0.0-next-beta.294+1e32ff91b
+      '@trpc/server': 11.0.0-rc.571+a70e169ce
 
-  '@trpc/client@11.0.0-rc.553':
-    resolution: {integrity: sha512-ICgziilbuAslRgHIVJZ162KaHQRpHXA1C1LPRsNpxPa9aStPF7eThAjn4V3JmDyJsuDLQgAmqLVRImlLPMYR5Q==}
-    peerDependencies:
-      '@trpc/server': 11.0.0-rc.553+9b629cc67
-
-  '@trpc/react-query@11.0.0-next-beta.294':
-    resolution: {integrity: sha512-behVOMsJRh73wltFrLc7J3ulWO/A2O529oDWlFZagtM2i/WWM2/7CVh3iL1MgW5pRB3hwC9mARKpGb80ZN4V0A==}
-    peerDependencies:
-      '@tanstack/react-query': ^5.0.0
-      '@trpc/client': 11.0.0-next-beta.294+1e32ff91b
-      '@trpc/server': 11.0.0-next-beta.294+1e32ff91b
-      react: '>=18.2.0'
-      react-dom: '>=18.2.0'
-
-  '@trpc/react-query@11.0.0-rc.553':
-    resolution: {integrity: sha512-m88HBhpfIDJccJCXycHtkGS82RG2TVPsZUFIWswR8m6ip5eFNmqWASanu7DiiFbY6sufLT1S8ee28towrPUgoA==}
+  '@trpc/react-query@11.0.0-rc.571':
+    resolution: {integrity: sha512-+LNIou3JQ/wQybTk1Vt90cKWk8LGGHrhsHiTWJFRiApaNgl/y7EkOfoOZ/we8jY3hPnyG5CXcqXx9SDbrmy8lg==}
     peerDependencies:
       '@tanstack/react-query': ^5.54.1
-      '@trpc/client': 11.0.0-rc.553+9b629cc67
-      '@trpc/server': 11.0.0-rc.553+9b629cc67
+      '@trpc/client': 11.0.0-rc.571+a70e169ce
+      '@trpc/server': 11.0.0-rc.571+a70e169ce
       react: '>=18.2.0'
       react-dom: '>=18.2.0'
 
-  '@trpc/server@11.0.0-next-beta.294':
-    resolution: {integrity: sha512-wwz78kfl4c8WQ3ytjzYf3SM8uxhvhSRYVxqqChPM+IbDb9scfNyEsZOUzSWds8brFNgO3LHeHYkP0l8S4YdDXA==}
-
-  '@trpc/server@11.0.0-rc.553':
-    resolution: {integrity: sha512-pYUhxV3QU834jP1ugJk1uhtPwwaY1ymIuupb4DiWOhNCl68syuXPlUdD8IYsYKd3BjLkmnjlsOUMoyd/aoOF/Q==}
+  '@trpc/server@11.0.0-rc.571':
+    resolution: {integrity: sha512-CISo9BoXSArTPt3MfxbOTPUcEdtKOl5Qgp8P+udiaA/nRmjndvVeZWQSmy1elRv0mQ/vvUI1VLsYm9Dn1/bysw==}
 
   '@tybys/wasm-util@0.8.3':
     resolution: {integrity: sha512-Z96T/L6dUFFxgFJ+pQtkPpne9q7i6kIPYCFnQBHSgSPV9idTsKfIhCss0h5iM9irweZCatkrdeP8yi5uM1eX6Q==}
@@ -4444,6 +4439,7 @@ packages:
   eslint@8.57.1:
     resolution: {integrity: sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   eslint@9.11.1:
@@ -4529,13 +4525,26 @@ packages:
     resolution: {integrity: sha512-2Zks0hf1VLFYI1kbh0I5jP3KHHyCHpkfyHBzsSXRFgl/Bg9mWYfMW8oD+PdMPlEwy5HNsR9JutYy6pMeOh61nw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
+  expo-application@5.9.1:
+    resolution: {integrity: sha512-uAfLBNZNahnDZLRU41ZFmNSKtetHUT9Ua557/q189ua0AWV7pQjoVAx49E4953feuvqc9swtU3ScZ/hN1XO/FQ==}
+    peerDependencies:
+      expo: '*'
+
   expo-asset@10.0.10:
     resolution: {integrity: sha512-0qoTIihB79k+wGus9wy0JMKq7DdenziVx3iUkGvMAy2azscSgWH6bd2gJ9CGnhC6JRd3qTMFBL0ou/fx7WZl7A==}
     peerDependencies:
       expo: '*'
 
+  expo-auth-session@5.5.2:
+    resolution: {integrity: sha512-fgqrNz9FhCl/kNyU2Vy2AmLWk+X7vmgiGN2KVUgB8yLHl/tPogYLpNOiqFl/pMLMveoKjPpVOVfbz3RTJHJoTg==}
+
   expo-constants@16.0.2:
     resolution: {integrity: sha512-9tNY3OVO0jfiMzl7ngb6IOyR5VFzNoN5OOazUWoeGfmMqVB5kltTemRvKraK9JRbBKIw+SOYLEmF0sEqgFZ6OQ==}
+    peerDependencies:
+      expo: '*'
+
+  expo-crypto@13.0.2:
+    resolution: {integrity: sha512-7f/IMPYJZkBM21LNEMXGrNo/0uXSVfZTwufUdpNKedJR0fm5fH4DCSN79ZddlV26nF90PuXjK2inIbI6lb0qRA==}
     peerDependencies:
       expo: '*'
 
@@ -10069,9 +10078,9 @@ snapshots:
     dependencies:
       hono: 4.6.3
 
-  '@hono/trpc-server@0.3.2(@trpc/server@11.0.0-next-beta.294)(hono@4.6.3)':
+  '@hono/trpc-server@0.3.2(@trpc/server@11.0.0-rc.571)(hono@4.6.3)':
     dependencies:
-      '@trpc/server': 11.0.0-next-beta.294
+      '@trpc/server': 11.0.0-rc.571
       hono: 4.6.3
 
   '@humanwhocodes/config-array@0.13.0':
@@ -11404,33 +11413,19 @@ snapshots:
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}
 
-  '@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294)':
+  '@trpc/client@11.0.0-rc.571(@trpc/server@11.0.0-rc.571)':
     dependencies:
-      '@trpc/server': 11.0.0-next-beta.294
+      '@trpc/server': 11.0.0-rc.571
 
-  '@trpc/client@11.0.0-rc.553(@trpc/server@11.0.0-rc.553)':
-    dependencies:
-      '@trpc/server': 11.0.0-rc.553
-
-  '@trpc/react-query@11.0.0-next-beta.294(@tanstack/react-query@5.59.0(react@18.3.1))(@trpc/client@11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294))(@trpc/server@11.0.0-next-beta.294)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@trpc/react-query@11.0.0-rc.571(@tanstack/react-query@5.59.0(react@18.3.1))(@trpc/client@11.0.0-rc.571(@trpc/server@11.0.0-rc.571))(@trpc/server@11.0.0-rc.571)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/react-query': 5.59.0(react@18.3.1)
-      '@trpc/client': 11.0.0-next-beta.294(@trpc/server@11.0.0-next-beta.294)
-      '@trpc/server': 11.0.0-next-beta.294
+      '@trpc/client': 11.0.0-rc.571(@trpc/server@11.0.0-rc.571)
+      '@trpc/server': 11.0.0-rc.571
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@trpc/react-query@11.0.0-rc.553(@tanstack/react-query@5.59.0(react@18.3.1))(@trpc/client@11.0.0-rc.553(@trpc/server@11.0.0-rc.553))(@trpc/server@11.0.0-rc.553)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@tanstack/react-query': 5.59.0(react@18.3.1)
-      '@trpc/client': 11.0.0-rc.553(@trpc/server@11.0.0-rc.553)
-      '@trpc/server': 11.0.0-rc.553
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  '@trpc/server@11.0.0-next-beta.294': {}
-
-  '@trpc/server@11.0.0-rc.553': {}
+  '@trpc/server@11.0.0-rc.571': {}
 
   '@tybys/wasm-util@0.8.3':
     dependencies:
@@ -13151,6 +13146,10 @@ snapshots:
       jest-message-util: 29.7.0
       jest-util: 29.7.0
 
+  expo-application@5.9.1(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))):
+    dependencies:
+      expo: 51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))
+
   expo-asset@10.0.10(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))):
     dependencies:
       expo: 51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))
@@ -13160,6 +13159,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  expo-auth-session@5.5.2(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))):
+    dependencies:
+      expo-application: 5.9.1(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
+      expo-constants: 16.0.2(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
+      expo-crypto: 13.0.2(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
+      expo-linking: 6.3.1(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
+      expo-web-browser: 13.0.3(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7)))
+      invariant: 2.2.4
+    transitivePeerDependencies:
+      - expo
+      - supports-color
+
   expo-constants@16.0.2(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))):
     dependencies:
       '@expo/config': 9.0.4
@@ -13167,6 +13178,11 @@ snapshots:
       expo: 51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))
     transitivePeerDependencies:
       - supports-color
+
+  expo-crypto@13.0.2(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))):
+    dependencies:
+      base64-js: 1.5.1
+      expo: 51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))
 
   expo-dev-client@4.0.27(expo@51.0.36(@babel/core@7.25.7)(@babel/preset-env@7.25.7(@babel/core@7.25.7))):
     dependencies:

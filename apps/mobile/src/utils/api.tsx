@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 
 import type { AppRouter } from "@deal-findr/backend/src/trpc/";
@@ -8,6 +8,12 @@ import type { AppRouter } from "@deal-findr/backend/src/trpc/";
 import { getBaseUrl } from "./base-url.tsx";
 import { getToken } from "./session-store.ts";
 import { SuperJSON } from "superjson";
+
+export function isTRPCClientError(
+  cause: unknown,
+): cause is TRPCClientError<AppRouter> {
+  return cause instanceof TRPCClientError;
+}
 
 /**
  * A set of typesafe hooks for consuming your API.
@@ -23,7 +29,21 @@ export {
  * Use only in _app.tsx
  */
 export function TRPCProvider(props: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry(failureCount, error) {
+              if (isTRPCClientError(error))
+                if (error.data?.code === "UNAUTHORIZED") return false;
+              if (failureCount < 2) return true;
+              return false;
+            },
+          },
+        },
+      }),
+  );
   const [trpcClient] = useState(() =>
     api.createClient({
       links: [

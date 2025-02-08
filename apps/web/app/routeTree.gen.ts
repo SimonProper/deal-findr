@@ -15,6 +15,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as AuthedImport } from './routes/_authed'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthMobileImport } from './routes/auth/mobile'
 import { Route as AuthCallbackProviderImport } from './routes/auth/callback/$provider'
 
 // Create/Update Routes
@@ -36,6 +37,11 @@ const AuthedRoute = AuthedImport.update({
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthMobileRoute = AuthMobileImport.update({
+  path: '/auth/mobile',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -76,6 +82,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/auth/mobile': {
+      id: '/auth/mobile'
+      path: '/auth/mobile'
+      fullPath: '/auth/mobile'
+      preLoaderRoute: typeof AuthMobileImport
+      parentRoute: typeof rootRoute
+    }
     '/auth/callback/$provider': {
       id: '/auth/callback/$provider'
       path: '/auth/callback/$provider'
@@ -92,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRoute
   '/login': typeof LoginRoute
+  '/auth/mobile': typeof AuthMobileRoute
   '/auth/callback/$provider': typeof AuthCallbackProviderRoute
 }
 
@@ -99,6 +113,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRoute
   '/login': typeof LoginRoute
+  '/auth/mobile': typeof AuthMobileRoute
   '/auth/callback/$provider': typeof AuthCallbackProviderRoute
 }
 
@@ -108,20 +123,22 @@ export interface FileRoutesById {
   '/_authed': typeof AuthedRoute
   '/_layout': typeof LayoutRoute
   '/login': typeof LoginRoute
+  '/auth/mobile': typeof AuthMobileRoute
   '/auth/callback/$provider': typeof AuthCallbackProviderRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/auth/callback/$provider'
+  fullPaths: '/' | '' | '/login' | '/auth/mobile' | '/auth/callback/$provider'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/auth/callback/$provider'
+  to: '/' | '' | '/login' | '/auth/mobile' | '/auth/callback/$provider'
   id:
     | '__root__'
     | '/'
     | '/_authed'
     | '/_layout'
     | '/login'
+    | '/auth/mobile'
     | '/auth/callback/$provider'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +148,7 @@ export interface RootRouteChildren {
   AuthedRoute: typeof AuthedRoute
   LayoutRoute: typeof LayoutRoute
   LoginRoute: typeof LoginRoute
+  AuthMobileRoute: typeof AuthMobileRoute
   AuthCallbackProviderRoute: typeof AuthCallbackProviderRoute
 }
 
@@ -139,6 +157,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthedRoute: AuthedRoute,
   LayoutRoute: LayoutRoute,
   LoginRoute: LoginRoute,
+  AuthMobileRoute: AuthMobileRoute,
   AuthCallbackProviderRoute: AuthCallbackProviderRoute,
 }
 
@@ -158,6 +177,7 @@ export const routeTree = rootRoute
         "/_authed",
         "/_layout",
         "/login",
+        "/auth/mobile",
         "/auth/callback/$provider"
       ]
     },
@@ -172,6 +192,9 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/auth/mobile": {
+      "filePath": "auth/mobile.tsx"
     },
     "/auth/callback/$provider": {
       "filePath": "auth/callback/$provider.tsx"

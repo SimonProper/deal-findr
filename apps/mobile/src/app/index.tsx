@@ -3,21 +3,27 @@ import { Button, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack } from "expo-router";
 import { useSignIn, useSignOut, useUser } from "@/utils/auth.tsx";
+import { api } from "@/utils/api";
 
 function MobileAuth() {
   const user = useUser();
   const signIn = useSignIn();
   const signOut = useSignOut();
+  const util = api.useUtils();
 
   return (
     <>
       <Text className="pb-2 text-center text-xl font-semibold text-white">
-        {/* {user?.name ?? "Not logged in"} */}
+        {user?.firstName ?? "Not logged in"}
       </Text>
       <Button
-        // onPress={() => (user ? signOut() : signIn())}
-        // title={user ? "Sign Out" : "Sign In With Discord"}
-        title=""
+        onPress={() => (user ? signOut() : signIn())}
+        title={user ? "Sign Out" : "Sign In"}
+        color={"#5B65E9"}
+      />
+      <Button
+        onPress={() => util.user.whoAmI.invalidate()}
+        title={"invalidate"}
         color={"#5B65E9"}
       />
     </>
